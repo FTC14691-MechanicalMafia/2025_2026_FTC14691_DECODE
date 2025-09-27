@@ -25,4 +25,15 @@ android {
 
 dependencies {
     implementation project(':FtcRobotController')
+
+    implementation project(':MeepMeepTesting')
+
+    implementation "com.acmerobotics.roadrunner:ftc:0.1.14"
+    implementation "com.acmerobotics.roadrunner:core:1.0.0"
+    implementation "com.acmerobotics.roadrunner:actions:1.0.0"
+    implementation "com.acmerobotics.dashboard:dashboard:0.4.16"
+
+    testImplementation "junit:junit:4.13.2"
+    testImplementation 'org.mockito:mockito-core:5.20.0'
+    androidTestImplementation 'org.mockito:mockito-android:5.20.0'
 }

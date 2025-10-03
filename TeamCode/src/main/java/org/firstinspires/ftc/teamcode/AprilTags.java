@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
 
 import android.util.Size;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;

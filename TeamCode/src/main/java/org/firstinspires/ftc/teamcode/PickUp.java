@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="Basic: Omni Linear OpMode", group="Linear OpMode")
-
 public class PickUp extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftIntakeDrive = null;

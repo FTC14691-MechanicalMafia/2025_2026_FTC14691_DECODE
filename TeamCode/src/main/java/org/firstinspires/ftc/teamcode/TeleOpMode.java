@@ -20,6 +20,8 @@ public class TeleOpMode extends OpMode {
 
     @Override
     public void init() {
+        // TODO - Init our drive motors (set 0 power behavior, direction)
+        telemetry.addLine("Mecanum: Offline");
 
         frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
         backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
@@ -38,8 +40,15 @@ public class TeleOpMode extends OpMode {
 
 
         // TODO - Init our pinpoint driver / dead wheels
+        telemetry.addLine("Pinpoint: Offline");
         // TODO - April tag stuff (camera)
+        telemetry.addLine("Camera: Offline");
         // TODO - init color identification
+        telemetry.addLine("Color: Offline");
+        // TODO - Init intake
+        telemetry.addLine("Intake: Offline");
+        // TODO - init outtake
+        telemetry.addLine("Outtake: Offline");
         // TODO - init telemetry (display on the driver hub)
         intake = hardwareMap.get(DcMotor.class, "intake"); //CHANGE PLZ!!
         outtake = hardwareMap.get(DcMotor.class, "outtake"); //CHANGE PLZ!!
@@ -51,7 +60,11 @@ public class TeleOpMode extends OpMode {
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         // TODO - init distance sensors
-        // TODO - init indicator light
+        telemetry.addLine("Distance: Offline");
+        // TODO - init indicator light; Note - no telemetry needed since this is its own status
+
+        // init telemetry (display on the driver hub)
+        telemetry.update();
     }
 
     @Override
@@ -73,6 +86,10 @@ public class TeleOpMode extends OpMode {
     @Override
     public void loop() {
         // Controller 1
+        // TODO - RT for boost
+        // TODO - LT for slow
+        // TODO - implement left stick for mechanic forward/strafe
+        // TODO - implement right stick for rotation
         double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
         double lateral = gamepad1.left_stick_x;
         double yaw = gamepad1.right_stick_x;
@@ -104,10 +121,21 @@ public class TeleOpMode extends OpMode {
         // TODO - right stick aiming for distance angle
         // TODO - X for auto aiming (overrides driver)
         // TODO - L/RT for shoot ball
+        // TODO - B for intake on/off
         intake.setPower(gamepad2.b ? 1.0 : 0.0);
         outtake.setPower(gamepad2.a ? 1.0 : 0.0);
         // TODO - A for outtake on/off
 
-        // TODO - update telemetry
+        // TODO - update the coordinates
+        telemetry.addLine("Mecanum: Offline");
+        telemetry.addLine("Pinpoint: Offline");
+        telemetry.addLine("Camera: Offline");
+        telemetry.addLine("Color: Offline");
+        telemetry.addLine("Intake: Offline");
+        telemetry.addLine("Outtake: Offline");
+        telemetry.addLine("Distance: Offline");
+
+        // update telemetry
+        telemetry.update();
     }
 }

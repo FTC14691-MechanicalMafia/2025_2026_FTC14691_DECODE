@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -20,7 +19,7 @@ public class TeleOpMode extends OpMode {
 
     @Override
     public void init() {
-        // TODO - Init our drive motors (set 0 power behavior, direction)
+        // Init our drive motors (set 0 power behavior, direction)
         telemetry.addLine("Mecanum: Offline");
 
         frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
@@ -45,19 +44,19 @@ public class TeleOpMode extends OpMode {
         telemetry.addLine("Camera: Offline");
         // TODO - init color identification
         telemetry.addLine("Color: Offline");
-        // TODO - Init intake
+        // Init intake
         telemetry.addLine("Intake: Offline");
-        // TODO - init outtake
-        telemetry.addLine("Outtake: Offline");
-        // TODO - init telemetry (display on the driver hub)
         intake = hardwareMap.get(DcMotor.class, "intake"); //CHANGE PLZ!!
+        intake.setDirection(DcMotorSimple.Direction.FORWARD);
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+        //  init outtake
+        telemetry.addLine("Outtake: Offline");
         outtake = hardwareMap.get(DcMotor.class, "outtake"); //CHANGE PLZ!!
+        outtake.setDirection(DcMotorSimple.Direction.FORWARD);
+        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        intake.setDirection(DcMotorSimple.Direction.FORWARD);
-        intake.setDirection(DcMotorSimple.Direction.FORWARD);
-
-        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        // TODO - init telemetry (display on the driver hub)
 
         // TODO - init distance sensors
         telemetry.addLine("Distance: Offline");
@@ -86,12 +85,11 @@ public class TeleOpMode extends OpMode {
     @Override
     public void loop() {
         // Controller 1
-        // TODO - RT for boost
-        // TODO - LT for slow
-        // TODO - implement left stick for mechanic forward/strafe
-        // TODO - implement right stick for rotation
+
+        // implement left stick for mechanic forward/strafe
         double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
         double lateral = gamepad1.left_stick_x;
+        // implement right stick for rotation
         double yaw = gamepad1.right_stick_x;
 
         double frontLeftPower;
@@ -100,8 +98,10 @@ public class TeleOpMode extends OpMode {
         double backRightPower;
         double multiplier = 0.75;
         if (gamepad1.left_trigger < 0) {
+            //  LT for slow
             multiplier = 0.5;
         } else if (gamepad1.right_trigger < 0) {
+            //  RT for boost
             multiplier = 1;
         }
         frontLeftPower = (axial + lateral + yaw) * multiplier;
@@ -109,7 +109,7 @@ public class TeleOpMode extends OpMode {
         backLeftPower = (axial - lateral + yaw) * multiplier;
         backRightPower = (axial + lateral - yaw) * multiplier;
 
-
+        // set the drive power
         frontLeftDrive.setPower(frontLeftPower);
         frontRightDrive.setPower(frontRightPower);
         backLeftDrive.setPower(backLeftPower);
@@ -121,10 +121,10 @@ public class TeleOpMode extends OpMode {
         // TODO - right stick aiming for distance angle
         // TODO - X for auto aiming (overrides driver)
         // TODO - L/RT for shoot ball
-        // TODO - B for intake on/off
+        // B for intake on/off
         intake.setPower(gamepad2.b ? 1.0 : 0.0);
+        // A for outtake on/off
         outtake.setPower(gamepad2.a ? 1.0 : 0.0);
-        // TODO - A for outtake on/off
 
         // TODO - update the coordinates
         telemetry.addLine("Mecanum: Offline");

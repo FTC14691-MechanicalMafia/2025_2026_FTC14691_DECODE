@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="Basic: Omni Linear OpMode", group="Linear OpMode")
+@TeleOp(name="PickUp", group="Linear OpMode")
 public class PickUp extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftIntakeDrive = null;
@@ -27,7 +27,7 @@ public class PickUp extends LinearOpMode {
         runtime.reset();
 
         while (opModeIsActive()){
-            double intakePower = gamepad2.x ? 1.0 : 0.0;
+            double intakePower = gamepad2.b ? 1.0 : 0.0;
 
             leftIntakeDrive.setPower(intakePower);
             rightIntakeDrive.setPower(intakePower);

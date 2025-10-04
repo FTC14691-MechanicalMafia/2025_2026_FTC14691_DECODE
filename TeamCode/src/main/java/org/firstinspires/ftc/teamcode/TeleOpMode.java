@@ -62,30 +62,25 @@ public class TeleOpMode extends OpMode {
     @Override
     public void loop() {
         // Controller 1
-        double axial   = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
-        double lateral =  gamepad1.left_stick_x;
-        double yaw     =  gamepad1.right_stick_x;
+        double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
+        double lateral = gamepad1.left_stick_x;
+        double yaw = gamepad1.right_stick_x;
 
         double frontLeftPower;
         double frontRightPower;
         double backLeftPower;
         double backRightPower;
+        double multiplier = 0.75;
         if (gamepad1.left_trigger < 0) {
-            frontLeftPower  = (axial + lateral + yaw)*0.5;
-            frontRightPower = (axial - lateral - yaw)*0.5;
-            backLeftPower   = (axial - lateral + yaw)*0.5;
-            backRightPower  = (axial + lateral - yaw)*0.5;
-        } else if (gamepad1.right_trigger < 0){
-            frontLeftPower  = (axial + lateral + yaw)*1;
-            frontRightPower = (axial - lateral - yaw)*1;
-            backLeftPower   = (axial - lateral + yaw)*1;
-            backRightPower  = (axial + lateral - yaw)*1;
-        } else {
-            frontLeftPower  = (axial + lateral + yaw)*0.75;
-            frontRightPower = (axial - lateral - yaw)*0.75;
-            backLeftPower   = (axial - lateral + yaw)*0.75;
-            backRightPower  = (axial + lateral - yaw)*0.75;
+            multiplier = 0.5;
+        } else if (gamepad1.right_trigger < 0) {
+            multiplier = 1;
         }
+        frontLeftPower = (axial + lateral + yaw) * multiplier;
+        frontRightPower = (axial - lateral - yaw) * multiplier;
+        backLeftPower = (axial - lateral + yaw) * multiplier;
+        backRightPower = (axial + lateral - yaw) * multiplier;
+
 
         frontLeftDrive.setPower(frontLeftPower);
         frontRightDrive.setPower(frontRightPower);

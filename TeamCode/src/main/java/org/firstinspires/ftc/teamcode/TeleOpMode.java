@@ -13,6 +13,10 @@ public class TeleOpMode extends OpMode {
     private DcMotor backLeftDrive = null;
     private DcMotor frontRightDrive = null;
     private DcMotor backRightDrive = null;
+    private DcMotor intake = null;
+    private DcMotor outtake = null;
+
+
 
     @Override
     public void init() {
@@ -37,8 +41,15 @@ public class TeleOpMode extends OpMode {
         // TODO - April tag stuff (camera)
         // TODO - init color identification
         // TODO - init telemetry (display on the driver hub)
-        // TODO - Init intake
-        // TODO - init outtake
+        intake = hardwareMap.get(DcMotor.class, "intake"); //CHANGE PLZ!!
+        outtake = hardwareMap.get(DcMotor.class, "outtake"); //CHANGE PLZ!!
+
+        intake.setDirection(DcMotorSimple.Direction.FORWARD);
+        intake.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
         // TODO - init distance sensors
         // TODO - init indicator light
     }
@@ -93,7 +104,8 @@ public class TeleOpMode extends OpMode {
         // TODO - right stick aiming for distance angle
         // TODO - X for auto aiming (overrides driver)
         // TODO - L/RT for shoot ball
-        // TODO - B for intake on/off
+        intake.setPower(gamepad2.b ? 1.0 : 0.0);
+        outtake.setPower(gamepad2.a ? 1.0 : 0.0);
         // TODO - A for outtake on/off
 
         // TODO - update telemetry

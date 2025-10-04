@@ -2,13 +2,37 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class TeleOpMode extends OpMode {
 
+    private ElapsedTime runtime = new ElapsedTime();
+    private DcMotor frontLeftDrive = null;
+    private DcMotor backLeftDrive = null;
+    private DcMotor frontRightDrive = null;
+    private DcMotor backRightDrive = null;
 
     @Override
     public void init() {
-        // TODO - Init our drive motors (set 0 power behavior, direction)
+
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
+        backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
+
+        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+
+        frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
         // TODO - Init our pinpoint driver / dead wheels
         // TODO - April tag stuff (camera)
         // TODO - init color identification
@@ -38,10 +62,36 @@ public class TeleOpMode extends OpMode {
     @Override
     public void loop() {
         // Controller 1
-        // TODO - RT for boost
-        // TODO - LT for slow
-        // TODO - implement left stick for mechanic forward/strafe
-        // TODO - implement right stick for rotation
+        double axial   = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
+        double lateral =  gamepad1.left_stick_x;
+        double yaw     =  gamepad1.right_stick_x;
+
+        double frontLeftPower;
+        double frontRightPower;
+        double backLeftPower;
+        double backRightPower;
+        if (gamepad1.left_trigger < 0) {
+            frontLeftPower  = (axial + lateral + yaw)*0.5;
+            frontRightPower = (axial - lateral - yaw)*0.5;
+            backLeftPower   = (axial - lateral + yaw)*0.5;
+            backRightPower  = (axial + lateral - yaw)*0.5;
+        } else if (gamepad1.right_trigger < 0){
+            frontLeftPower  = (axial + lateral + yaw)*1;
+            frontRightPower = (axial - lateral - yaw)*1;
+            backLeftPower   = (axial - lateral + yaw)*1;
+            backRightPower  = (axial + lateral - yaw)*1;
+        } else {
+            frontLeftPower  = (axial + lateral + yaw)*0.75;
+            frontRightPower = (axial - lateral - yaw)*0.75;
+            backLeftPower   = (axial - lateral + yaw)*0.75;
+            backRightPower  = (axial + lateral - yaw)*0.75;
+        }
+
+        frontLeftDrive.setPower(frontLeftPower);
+        frontRightDrive.setPower(frontRightPower);
+        backLeftDrive.setPower(backLeftPower);
+        backRightDrive.setPower(backRightPower);
+
 
         // Controller 2
         // TODO - Left stick aiming for distance (motor speed)

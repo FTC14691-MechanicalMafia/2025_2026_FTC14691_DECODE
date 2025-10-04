@@ -31,7 +31,7 @@ public class AprilTags extends LinearOpMode {
             while (opModeIsActive()) {
 
                 List<Double> aprilPose = telemetryAprilTag();
-
+                double x = aprilPose.;
                 // Push telemetry to the Driver Station.
                 telemetry.update();
 

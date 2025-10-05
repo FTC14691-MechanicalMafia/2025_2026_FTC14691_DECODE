@@ -30,7 +30,15 @@ public class AprilTags extends LinearOpMode {
             while (opModeIsActive()) {
 
                 List<Double> aprilPose = telemetryAprilTag();
-                double x = aprilPose.get(0);
+                double xPose = aprilPose.get(0);
+                double yPose = aprilPose.get(1);
+                double zPose = aprilPose.get(2);
+                double pitch = aprilPose.get(3);
+                double roll = aprilPose.get(4);
+                double yaw = aprilPose.get(5);
+                double range = aprilPose.get(6);
+                double bearing = aprilPose.get(7);
+                double height = aprilPose.get(8);
                 // Push telemetry to the Driver Station.
                 telemetry.update();
 

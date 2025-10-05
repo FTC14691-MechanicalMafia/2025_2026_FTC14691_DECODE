@@ -14,7 +14,6 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import java.util.List;
 
 @TeleOp(name = "Concept: AprilTag", group = "Concept")
-@Disabled
 public class AprilTags extends LinearOpMode {
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
     private AprilTagProcessor aprilTag;
@@ -31,7 +30,7 @@ public class AprilTags extends LinearOpMode {
             while (opModeIsActive()) {
 
                 List<Double> aprilPose = telemetryAprilTag();
-                double x = aprilPose.;
+                double x = aprilPose.get(0);
                 // Push telemetry to the Driver Station.
                 telemetry.update();
 

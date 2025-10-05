@@ -78,7 +78,13 @@ public class TeleOpMode extends OpMode {
     public void stop() {
         super.stop();
 
-        // TODO - stop all motors
+        // stop all motors
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
+        intake.setPower(0);
+        outtake.setPower(0);
         // TODO - any final telemetry
     }
 

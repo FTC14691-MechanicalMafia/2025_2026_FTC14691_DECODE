@@ -18,7 +18,7 @@ public class TeleOpMode extends OpMode {
     private DcMotor intake = null;
     private DcMotor outtake = null;
 
-    AprilTags april; //creates object for AprilTags
+    AprilTags april = new AprilTags(); //creates object for AprilTags
 
     @Override
     public void init() {

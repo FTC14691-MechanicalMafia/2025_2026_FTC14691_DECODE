@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import java.util.List;
+
 public class TeleOpMode extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -15,7 +17,7 @@ public class TeleOpMode extends OpMode {
     private DcMotor intake = null;
     private DcMotor outtake = null;
 
-
+    AprilTags april; //creates object for AprilTags
 
     @Override
     public void init() {
@@ -39,6 +41,7 @@ public class TeleOpMode extends OpMode {
 
 
         // TODO - Init our pinpoint driver / dead wheels
+        april.initAprilTag();
         telemetry.addLine("Pinpoint: Offline");
         // TODO - April tag stuff (camera)
         telemetry.addLine("Camera: Offline");
@@ -70,7 +73,17 @@ public class TeleOpMode extends OpMode {
     public void start() {
         super.start();
 
-        // TODO - look for april tags
+        List<Double> info = april.telemetryAprilTag();
+        //list data is (xPose, yPose, zPose, pitch, roll, yaw, range, bearing, elevation)
+        telemetry.addData("x pose is " + info.get(0), "meters");
+        telemetry.addData("Y pose is " + info.get(1), "meters");
+        telemetry.addData("Z pose is " + info.get(2), "meters");
+        telemetry.addData("Pitch is " + info.get(3), "degrees");
+        telemetry.addData("Roll is " + info.get(4), "degrees");
+        telemetry.addData("Yaw is " + info.get(5), "degrees");
+        telemetry.addData("Range is " + info.get(6), "meters");
+        telemetry.addData("Bearing is " + info.get(7), "degrees");
+        telemetry.addData("Elevation is " + info.get(8), "meters");
         // TODO - establish our coordinates / location from the april tag
     }
 
@@ -90,6 +103,7 @@ public class TeleOpMode extends OpMode {
 
     @Override
     public void loop() {
+        april.runOpMode();
         // Controller 1
 
         // implement left stick for mechanic forward/strafe

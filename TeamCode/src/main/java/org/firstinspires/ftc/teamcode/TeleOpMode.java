@@ -9,7 +9,7 @@ public class TeleOpMode extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor frontLeftDrive = null;
-    private DcMotor backLeftDrive = null;
+    private DcMotor backLeftDrive  = null;
     private DcMotor frontRightDrive = null;
     private DcMotor backRightDrive = null;
     private DcMotor intake = null;
@@ -132,7 +132,7 @@ public class TeleOpMode extends OpMode {
         // A for outtake on/off
         outtake.setPower(gamepad2.a ? 1.0 : 0.0);
 
-        // TODO - update the coordinates
+        //update the coordinates
         telemetry.addLine("Mecanum: Offline");
         telemetry.addLine("Pinpoint: Offline");
         telemetry.addLine("Camera: Offline");

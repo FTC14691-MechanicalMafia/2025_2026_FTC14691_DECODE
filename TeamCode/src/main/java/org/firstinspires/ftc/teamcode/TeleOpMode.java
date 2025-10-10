@@ -75,15 +75,15 @@ public class TeleOpMode extends OpMode {
 
         List<Double> info = april.telemetryAprilTag();
         //list data is (xPose, yPose, zPose, pitch, roll, yaw, range, bearing, elevation)
-        telemetry.addData("x pose is " + info.get(0), "meters");
-        telemetry.addData("Y pose is " + info.get(1), "meters");
-        telemetry.addData("Z pose is " + info.get(2), "meters");
+        telemetry.addData("x pose is " + info.get(0), "inches");
+        telemetry.addData("Y pose is " + info.get(1), "inches");
+        telemetry.addData("Z pose is " + info.get(2), "inches");
         telemetry.addData("Pitch is " + info.get(3), "degrees");
         telemetry.addData("Roll is " + info.get(4), "degrees");
         telemetry.addData("Yaw is " + info.get(5), "degrees");
-        telemetry.addData("Range is " + info.get(6), "meters");
+        telemetry.addData("Range is " + info.get(6), "inches");
         telemetry.addData("Bearing is " + info.get(7), "degrees");
-        telemetry.addData("Elevation is " + info.get(8), "meters");
+        telemetry.addData("Elevation is " + info.get(8), "inches");
         // TODO - establish our coordinates / location from the april tag
     }
 

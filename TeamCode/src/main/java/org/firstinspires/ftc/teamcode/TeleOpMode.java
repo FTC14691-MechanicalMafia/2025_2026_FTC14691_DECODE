@@ -75,15 +75,24 @@ public class TeleOpMode extends OpMode {
 
         List<Double> info = april.telemetryAprilTag();
         //list data is (xPose, yPose, zPose, pitch, roll, yaw, range, bearing, elevation)
-        telemetry.addData("x pose is " + info.get(0), "inches");
-        telemetry.addData("Y pose is " + info.get(1), "inches");
-        telemetry.addData("Z pose is " + info.get(2), "inches");
-        telemetry.addData("Pitch is " + info.get(3), "degrees");
-        telemetry.addData("Roll is " + info.get(4), "degrees");
-        telemetry.addData("Yaw is " + info.get(5), "degrees");
-        telemetry.addData("Range is " + info.get(6), "inches");
-        telemetry.addData("Bearing is " + info.get(7), "degrees");
-        telemetry.addData("Elevation is " + info.get(8), "inches");
+        telemetry.addData("blue X pose is " + info.get(0), "inches");
+        telemetry.addData("blue Y pose is " + info.get(1), "inches");
+        telemetry.addData("blue Z pose is " + info.get(2), "inches");
+        telemetry.addData("blue Pitch is " + info.get(3), "degrees");
+        telemetry.addData("blue Roll is " + info.get(4), "degrees");
+        telemetry.addData("blue Yaw is " + info.get(5), "degrees");
+        telemetry.addData("blue Range is " + info.get(6), "inches");
+        telemetry.addData("blue Bearing is " + info.get(7), "degrees");
+        telemetry.addData("blue Elevation is " + info.get(8), "inches");
+        telemetry.addData("red X pose is " + info.get(9), "inches");
+        telemetry.addData("red Y pose is " + info.get(10), "inches");
+        telemetry.addData("red Z pose is " + info.get(11), "inches");
+        telemetry.addData("red Pitch is " + info.get(12), "degrees");
+        telemetry.addData("red Roll is " + info.get(13), "degrees");
+        telemetry.addData("red Yaw is " + info.get(14), "degrees");
+        telemetry.addData("red Range is " + info.get(15), "inches");
+        telemetry.addData("red Bearing is " + info.get(16), "degrees");
+        telemetry.addData("red Elevation is " + info.get(17), "inches");
         // TODO - establish our coordinates / location from the april tag
     }
 

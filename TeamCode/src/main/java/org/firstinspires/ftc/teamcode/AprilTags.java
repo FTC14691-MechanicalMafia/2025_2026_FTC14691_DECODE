@@ -62,31 +62,61 @@ public class AprilTags extends LinearOpMode {
     public List<Double> telemetryAprilTag() {
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
         telemetry.addData("# AprilTags Detected", currentDetections.size());
-        double xPose = 0;
-        double yPose = 0;
-        double zPose = 0;
-        double pitch = 0; //y-rotation
-        double roll = 0; //x-rotation
-        double yaw = 0; //z-rotation
-        double range = 0; //distance
-        double bearing = 0; //
-        double elevation = 0; //
+        //blue april tag
+        double xPose20 = 0;
+        double yPose20 = 0;
+        double zPose20 = 0;
+        double pitch20 = 0; //y-rotation
+        double roll20 = 0; //x-rotation
+        double yaw20 = 0; //z-rotation
+        double range20 = 0; //distance
+        double bearing20 = 0; //
+        double elevation20 = 0; //
+        //red april tag
+        double xPose24 = 0;
+        double yPose24 = 0;
+        double zPose24 = 0;
+        double pitch24 = 0;
+        double roll24 = 0;
+        double yaw24 = 0;
+        double range24 = 0;
+        double bearing24 = 0;
+        double elevation24 = 0;
+
         for (AprilTagDetection detection : currentDetections) {
-            if (detection.metadata != null) {
-                xPose = detection.ftcPose.x;
-                yPose = detection.ftcPose.y;
-                zPose = detection.ftcPose.z;
-                pitch = detection.ftcPose.pitch;
-                roll = detection.ftcPose.roll;
-                yaw = detection.ftcPose.yaw;
-                range = detection.ftcPose.range;
-                bearing = detection.ftcPose.bearing;
-                elevation = detection.ftcPose.elevation;
+            if (detection.id == 20) {
+                xPose20 = detection.ftcPose.x;
+                yPose20 = detection.ftcPose.y;
+                zPose20 = detection.ftcPose.z;
+                pitch20 = detection.ftcPose.pitch;
+                roll20 = detection.ftcPose.roll;
+                yaw20 = detection.ftcPose.yaw;
+                range20 = detection.ftcPose.range;
+                bearing20 = detection.ftcPose.bearing;
+                elevation20 = detection.ftcPose.elevation;
                 telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
-                telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", xPose, yPose, zPose));
-                telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", pitch, roll, yaw));
-                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", range, bearing, elevation));
-            } else {
+                telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", xPose20, yPose20, zPose20));
+                telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", pitch20, roll20, yaw20));
+                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", range20, bearing20, elevation20));
+            }else{
+                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
+                telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
+            }
+            if(detection.id == 24){
+                xPose24 = detection.ftcPose.x;
+                yPose24 = detection.ftcPose.y;
+                zPose24 = detection.ftcPose.z;
+                pitch24 = detection.ftcPose.pitch;
+                roll24 = detection.ftcPose.roll;
+                yaw24 = detection.ftcPose.yaw;
+                range24 = detection.ftcPose.range;
+                bearing24 = detection.ftcPose.bearing;
+                elevation24 = detection.ftcPose.elevation;
+                telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
+                telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", xPose24, yPose24, zPose24));
+                telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", pitch24, roll24, yaw24));
+                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", range24, bearing24, elevation24));
+            }else {
                 telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
                 telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
             }
@@ -94,6 +124,6 @@ public class AprilTags extends LinearOpMode {
         telemetry.addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
         telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
         telemetry.addLine("RBE = Range, Bearing & Elevation");
-        return List.of(xPose, yPose, zPose, pitch, roll, yaw, range, bearing, elevation);
+        return List.of(xPose20, yPose20, zPose20, pitch20, roll20, yaw20, range20, bearing20, elevation20, xPose24, yPose24, zPose24, pitch24, roll24, yaw24, range24, bearing24, elevation24);
     }
 }

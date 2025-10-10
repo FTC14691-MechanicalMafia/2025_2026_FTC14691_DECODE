@@ -42,7 +42,6 @@ public class TeleOpMode extends OpMode {
 
 
         // TODO - Init our pinpoint driver / dead wheels
-        april.initAprilTag();
         telemetry.addLine("Pinpoint: Offline");
         // TODO - April tag stuff (camera)
         telemetry.addLine("Camera: Offline");

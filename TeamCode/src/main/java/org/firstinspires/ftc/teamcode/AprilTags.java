@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 
 import android.util.Size;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -11,40 +11,37 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
+
 import java.util.List;
 
 @TeleOp(name = "Concept: AprilTag", group = "Concept")
-public class AprilTags extends LinearOpMode {
+public class AprilTags extends OpMode {
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
 
     @Override
-    public void runOpMode() {
-        initAprilTag();
-        telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
-        telemetry.addData(">", "Touch START to start OpMode");
-        telemetry.update();
-        waitForStart();
-        if (opModeIsActive()) {
-            while (opModeIsActive()) {
-                // Push telemetry to the Driver Station.
-                telemetry.update();
-
-                // Save CPU resources; can resume streaming when needed.
-                // maybe fix the CPU issue by erasing data right after use?
-                if (gamepad1.dpad_down) {
-                    visionPortal.stopStreaming();
-                } else if (gamepad1.dpad_up) {
-                    visionPortal.resumeStreaming();
-                }
-
-                // Share the CPU.
-                sleep(20);
-            }
-        }
-        visionPortal.close();
+    public void stop() {
+        super.stop();
+        visionPortal.stopStreaming();
     }
+
+    @Override
+    public void start() {
+        super.start();
+    }
+
+    @Override
+    public void loop() {
+
+    }
+
+    @Override
+    public void init() {
+        initAprilTag();
+        telemetryAprilTag();
+    }
+
     public void initAprilTag() {
         aprilTag = new AprilTagProcessor.Builder()
                 .build();

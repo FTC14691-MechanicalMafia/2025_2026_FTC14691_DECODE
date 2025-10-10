@@ -112,7 +112,6 @@ public class TeleOpMode extends OpMode {
 
     @Override
     public void loop() {
-        april.runOpMode();
         // Controller 1
 
         // implement left stick for mechanic forward/strafe

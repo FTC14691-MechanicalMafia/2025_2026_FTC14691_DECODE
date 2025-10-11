@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
 
-import android.util.Size;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.internal.opmode.TelemetryImpl;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -14,36 +15,22 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
 
-@TeleOp(name = "Concept: AprilTag", group = "Concept")
-public class AprilTags extends OpMode {
+public class AprilTags {
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
-    private AprilTagProcessor aprilTag;
+    private AprilTagProcessor processor;
     private VisionPortal visionPortal;
 
-    @Override
-    public void stop() {
-        super.stop();
-        visionPortal.stopStreaming();
-    }
+    public final Telemetry telemetry;
 
-    @Override
-    public void start() {
-        super.start();
-    }
+    public final HardwareMap hardwareMap;
 
-    @Override
-    public void loop() {
-
-    }
-
-    @Override
-    public void init() {
-        initAprilTag();
-        telemetryAprilTag();
+    public AprilTags(Telemetry telemetry, HardwareMap hardwareMap) {
+        this.telemetry = telemetry;
+        this.hardwareMap = hardwareMap;
     }
 
     public void initAprilTag() {
-        aprilTag = new AprilTagProcessor.Builder()
+        processor = new AprilTagProcessor.Builder()
                 .build();
         VisionPortal.Builder builder = new VisionPortal.Builder();
         if (USE_WEBCAM) {
@@ -51,11 +38,11 @@ public class AprilTags extends OpMode {
         } else {
             builder.setCamera(BuiltinCameraDirection.BACK);
         }
-        builder.addProcessor(aprilTag);
+        builder.addProcessor(processor);
         visionPortal = builder.build();
     }
     public List<Double> telemetryAprilTag() {
-        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+        List<AprilTagDetection> currentDetections = processor.getDetections();
         telemetry.addData("# AprilTags Detected", currentDetections.size());
         //blue april tag
         double xPose20 = 0;

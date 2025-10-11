@@ -18,13 +18,14 @@ public class TeleOpMode extends OpMode {
     private DcMotor intake = null;
     private DcMotor outtake = null;
 
-    AprilTags april = new AprilTags(); //creates object for AprilTags
+    private AprilTags aprilTag = null;
 
     @Override
     public void init() {
         // Init our drive motors (set 0 power behavior, direction)
         telemetry.addLine("Mecanum: Offline");
 
+        //init drive system
         frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
         backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
         frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
@@ -44,6 +45,9 @@ public class TeleOpMode extends OpMode {
         // TODO - Init our pinpoint driver / dead wheels
         telemetry.addLine("Pinpoint: Offline");
         // TODO - April tag stuff (camera)
+        aprilTag = new AprilTags(telemetry, hardwareMap);
+        aprilTag.initAprilTag();
+
         telemetry.addLine("Camera: Offline");
         // TODO - init color identification
         telemetry.addLine("Color: Offline");
@@ -73,7 +77,7 @@ public class TeleOpMode extends OpMode {
     public void start() {
         super.start();
 
-        List<Double> info = april.telemetryAprilTag();
+        List<Double> info = aprilTag.telemetryAprilTag();
         //list data is (xPose, yPose, zPose, pitch, roll, yaw, range, bearing, elevation)
         telemetry.addData("blue X pose is " + info.get(0), "inches");
         telemetry.addData("blue Y pose is " + info.get(1), "inches");

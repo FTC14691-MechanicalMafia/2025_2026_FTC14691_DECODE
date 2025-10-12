@@ -15,8 +15,8 @@ public class TeleOpMode extends OpMode {
     private DcMotor backLeftDrive  = null;
     private DcMotor frontRightDrive = null;
     private DcMotor backRightDrive = null;
-    private DcMotor intake = null;
-    private DcMotor outtake = null;
+    // private DcMotor intake = null;
+    //private DcMotor outtake = null;
 
     private AprilTags aprilTag = null;
 
@@ -31,10 +31,10 @@ public class TeleOpMode extends OpMode {
         frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
         backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
 
-        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+        backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
-        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-        backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        backRightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -53,15 +53,15 @@ public class TeleOpMode extends OpMode {
         telemetry.addLine("Color: Offline");
         // Init intake
         telemetry.addLine("Intake: Offline");
-        intake = hardwareMap.get(DcMotor.class, "intake"); //CHANGE PLZ!!
-        intake.setDirection(DcMotorSimple.Direction.FORWARD);
-        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        //intake = hardwareMap.get(DcMotor.class, "intake"); //CHANGE PLZ!!
+        //intake.setDirection(DcMotorSimple.Direction.FORWARD);
+        //intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         //  init outtake
         telemetry.addLine("Outtake: Offline");
-        outtake = hardwareMap.get(DcMotor.class, "outtake"); //CHANGE PLZ!!
-        outtake.setDirection(DcMotorSimple.Direction.FORWARD);
-        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        //outtake = hardwareMap.get(DcMotor.class, "outtake"); //CHANGE PLZ!!
+        //outtake.setDirection(DcMotorSimple.Direction.FORWARD);
+        //outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         // TODO - init telemetry (display on the driver hub)
 
@@ -110,8 +110,8 @@ public class TeleOpMode extends OpMode {
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
-        intake.setPower(0);
-        outtake.setPower(0);
+        //intake.setPower(0);
+        //outtake.setPower(0);
         // TODO - any final telemetry
     }
 
@@ -155,9 +155,9 @@ public class TeleOpMode extends OpMode {
         // TODO - X for auto aiming (overrides driver)
         // TODO - L/RT for shoot ball
         // B for intake on/off
-        intake.setPower(gamepad2.b ? 1.0 : 0.0);
+        //intake.setPower(gamepad2.b ? 1.0 : 0.0);
         // A for outtake on/off
-        outtake.setPower(gamepad2.a ? 1.0 : 0.0);
+        //outtake.setPower(gamepad2.a ? 1.0 : 0.0);
 
         //update the coordinates
         telemetry.addLine("Mecanum: Offline");
@@ -167,6 +167,28 @@ public class TeleOpMode extends OpMode {
         telemetry.addLine("Intake: Offline");
         telemetry.addLine("Outtake: Offline");
         telemetry.addLine("Distance: Offline");
+
+        List<Double> info = aprilTag.telemetryAprilTag();
+
+        telemetry.addData("blue X pose is " + info.get(0), "inches");
+        telemetry.addData("blue Y pose is " + info.get(1), "inches");
+        telemetry.addData("blue Z pose is " + info.get(2), "inches");
+        telemetry.addData("blue Pitch is " + info.get(3), "degrees");
+        telemetry.addData("blue Roll is " + info.get(4), "degrees");
+        telemetry.addData("blue Yaw is " + info.get(5), "degrees");
+        telemetry.addData("blue Range is " + info.get(6), "inches");
+        telemetry.addData("blue Bearing is " + info.get(7), "degrees");
+        telemetry.addData("blue Elevation is " + info.get(8), "inches");
+        telemetry.addData("red X pose is " + info.get(9), "inches");
+        telemetry.addData("red Y pose is " + info.get(10), "inches");
+        telemetry.addData("red Z pose is " + info.get(11), "inches");
+        telemetry.addData("red Pitch is " + info.get(12), "degrees");
+        telemetry.addData("red Roll is " + info.get(13), "degrees");
+        telemetry.addData("red Yaw is " + info.get(14), "degrees");
+        telemetry.addData("red Range is " + info.get(15), "inches");
+        telemetry.addData("red Bearing is " + info.get(16), "degrees");
+        telemetry.addData("red Elevation is " + info.get(17), "inches");
+
 
         // update telemetry
         telemetry.update();

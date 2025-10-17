@@ -34,7 +34,7 @@ public class AprilTags {
                 .build();
         VisionPortal.Builder builder = new VisionPortal.Builder();
         if (USE_WEBCAM) {
-            builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam"));
+            builder.setCamera(hardwareMap.get(WebcamName.class, "SN0001"));
         } else {
             builder.setCamera(BuiltinCameraDirection.BACK);
         }

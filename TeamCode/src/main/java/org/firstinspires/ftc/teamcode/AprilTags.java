@@ -38,6 +38,7 @@ public class AprilTags {
         } else {
             builder.setCamera(BuiltinCameraDirection.BACK);
         }
+        builder.setStreamFormat(VisionPortal.StreamFormat.MJPEG);
         builder.addProcessor(processor);
         visionPortal = builder.build();
     }

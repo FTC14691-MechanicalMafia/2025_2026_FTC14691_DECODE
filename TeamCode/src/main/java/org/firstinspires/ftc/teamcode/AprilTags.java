@@ -30,7 +30,12 @@ public class AprilTags {
     }
 
     public void initAprilTag() {
+        /*double fx = 0.1;//x-direction focal length
+        double fy = 0.1;//y-direction focal length
+        double cx = 0.1;//principal point x coord
+        double cy = 0.1;//principal point y coord*/
         processor = new AprilTagProcessor.Builder()
+                //.setLensIntrinsics(fx, fy, cx, cy)
                 .build();
         VisionPortal.Builder builder = new VisionPortal.Builder();
         if (USE_WEBCAM) {
@@ -40,6 +45,10 @@ public class AprilTags {
         }
         builder.setStreamFormat(VisionPortal.StreamFormat.MJPEG);
         builder.addProcessor(processor);
+        visionPortal = VisionPortal.easyCreateWithDefaults("Webcam", processor);
+        visionPortal.getCameraControl().setExposureControl(ExposureControl.Mode.MANUAL);
+        GainControl gainControl = visionPortal.getCameraControl().getGainControl();
+        gainControl.setGain(100); // Set gain to 100 (example value)
         visionPortal = builder.build();
     }
     public List<Double> telemetryAprilTag() {

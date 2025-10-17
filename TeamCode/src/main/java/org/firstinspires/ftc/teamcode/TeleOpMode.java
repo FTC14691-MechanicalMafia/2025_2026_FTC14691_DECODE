@@ -88,6 +88,7 @@ public class TeleOpMode extends OpMode {
         telemetry.addData("blue Range is " + info.get(6), "inches");
         telemetry.addData("blue Bearing is " + info.get(7), "degrees");
         telemetry.addData("blue Elevation is " + info.get(8), "inches");
+
         telemetry.addData("red X pose is " + info.get(9), "inches");
         telemetry.addData("red Y pose is " + info.get(10), "inches");
         telemetry.addData("red Z pose is " + info.get(11), "inches");

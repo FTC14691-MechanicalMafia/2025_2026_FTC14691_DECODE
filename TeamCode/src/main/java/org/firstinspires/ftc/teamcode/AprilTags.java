@@ -1,12 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import com.qualcomm.hardware.HardwareManualControlOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.ftccommon.internal.manualcontrol.ManualControlOpMode;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 import org.firstinspires.ftc.robotcore.internal.opmode.TelemetryImpl;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -19,6 +23,7 @@ public class AprilTags {
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
     private AprilTagProcessor processor;
     private VisionPortal visionPortal;
+    private ManualControlOpMode manualControl;
 
     public final Telemetry telemetry;
 
@@ -34,6 +39,7 @@ public class AprilTags {
         double fy = 0.1;//y-direction focal length
         double cx = 0.1;//principal point x coord
         double cy = 0.1;//principal point y coord*/
+        manualControl = new ManualControlOpMode();
         processor = new AprilTagProcessor.Builder()
                 //.setLensIntrinsics(fx, fy, cx, cy)
                 .build();
@@ -45,9 +51,9 @@ public class AprilTags {
         }
         builder.setStreamFormat(VisionPortal.StreamFormat.MJPEG);
         builder.addProcessor(processor);
-        visionPortal = VisionPortal.easyCreateWithDefaults("Webcam", processor);
-        visionPortal.getCameraControl().setExposureControl(ExposureControl.Mode.MANUAL);
-        GainControl gainControl = visionPortal.getCameraControl().getGainControl();
+        visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam"), processor);//allows for camera settings to be adjusted
+        visionPortal.getCameraControl(manualControl).setExposureControl(ExposureControl.Mode.Manual);//sets the control for camera settings to MANUAL
+        GainControl gainControl = visionPortal.getCameraControl(GainControl.Mode.MANUAL()).getGainControl();
         gainControl.setGain(100); // Set gain to 100 (example value)
         visionPortal = builder.build();
     }

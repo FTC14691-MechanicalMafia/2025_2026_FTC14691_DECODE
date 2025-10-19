@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import android.util.Size;
+
 import com.qualcomm.hardware.HardwareManualControlOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -33,17 +35,27 @@ public class AprilTags {
         this.telemetry = telemetry;
         this.hardwareMap = hardwareMap;
     }
-
+    public int patternDetect(){
+        List<AprilTagDetection> currentDetections = processor.getDetections();
+        int aprilDetect = 0;
+        for (AprilTagDetection detection : currentDetections) {
+            if(detection.id > 20 && detection.id < 24){
+                aprilDetect = detection.id;
+            }
+        }
+        return aprilDetect;
+    }
     public void initAprilTag() {
-        /*double fx = 0.1;//x-direction focal length
-        double fy = 0.1;//y-direction focal length
-        double cx = 0.1;//principal point x coord
-        double cy = 0.1;//principal point y coord*/
+        double fx = 10;//x-direction focal length
+        double fy = 10;//y-direction focal length
+        double cx = 5;//principal point x coord
+        double cy = 5;//principal point y coord
         manualControl = new ManualControlOpMode();
         processor = new AprilTagProcessor.Builder()
-                //.setLensIntrinsics(fx, fy, cx, cy)
+                .setLensIntrinsics(fx, fy, cx, cy)
                 .build();
-        VisionPortal.Builder builder = new VisionPortal.Builder();
+        VisionPortal.Builder builder = new VisionPortal.Builder()
+                .setCameraResolution(new Size(640, 480));
         if (USE_WEBCAM) {
             builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam"));
         } else {
@@ -51,10 +63,10 @@ public class AprilTags {
         }
         builder.setStreamFormat(VisionPortal.StreamFormat.MJPEG);
         builder.addProcessor(processor);
-        visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam"), processor);//allows for camera settings to be adjusted
+        /*visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam"), processor);//allows for camera settings to be adjusted
         visionPortal.getCameraControl(manualControl).setExposureControl(ExposureControl.Mode.Manual);//sets the control for camera settings to MANUAL
         GainControl gainControl = visionPortal.getCameraControl(GainControl.Mode.MANUAL()).getGainControl();
-        gainControl.setGain(100); // Set gain to 100 (example value)
+        gainControl.setGain(100); // Set gain to 100 (example value)*/
         visionPortal = builder.build();
     }
     public List<Double> telemetryAprilTag() {
@@ -96,9 +108,6 @@ public class AprilTags {
                 telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", xPose20, yPose20, zPose20));
                 telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", pitch20, roll20, yaw20));
                 telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", range20, bearing20, elevation20));
-            }else{
-                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
-                telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
             }
             if(detection.id == 24){
                 xPose24 = detection.ftcPose.x;

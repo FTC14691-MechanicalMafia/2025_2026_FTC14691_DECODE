@@ -7,6 +7,12 @@ import com.qualcomm.hardware.HardwareManualControlOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.AprilDetections;
+import org.firstinspires.ftc.teamcode.Targetting;
+import org.firstinspires.ftc.teamcode.Rotation;
+import org.firstinspires.ftc.teamcode.Pose;
+
+
 import org.firstinspires.ftc.ftccommon.internal.manualcontrol.ManualControlOpMode;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;

@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public class TeleOpMode extends OpMode {
     // private DcMotor intake = null;
     //private DcMotor outtake = null;
 
-    private AprilTags aprilTag = null;
+    private AprilTagDriver aprilTagDriver = null;
 
     @Override
     public void init() {
@@ -45,8 +44,8 @@ public class TeleOpMode extends OpMode {
         // TODO - Init our pinpoint driver / dead wheels
         telemetry.addLine("Pinpoint: Offline");
         // TODO - April tag stuff (camera)
-        aprilTag = new AprilTags(telemetry, hardwareMap);
-        aprilTag.initAprilTag();
+        aprilTagDriver = new AprilTagDriver(telemetry, hardwareMap);
+        aprilTagDriver.initAprilTag();
 
         telemetry.addLine("Camera: Offline");
         // TODO - init color identification
@@ -77,7 +76,7 @@ public class TeleOpMode extends OpMode {
     public void start() {
         super.start();
 
-        List<Double> info = aprilTag.telemetryAprilTag();
+        List<Double> info = aprilTagDriver.telemetryAprilTag();
         //list data is (xPose, yPose, zPose, pitch, roll, yaw, range, bearing, elevation)
         telemetry.addData("blue X pose is " + info.get(0), "inches");
         telemetry.addData("blue Y pose is " + info.get(1), "inches");
@@ -168,7 +167,7 @@ public class TeleOpMode extends OpMode {
         telemetry.addLine("Outtake: Offline");
         telemetry.addLine("Distance: Offline");
 
-        List<Double> info = aprilTag.telemetryAprilTag();
+        List<Double> info = aprilTagDriver.telemetryAprilTag();
 
         telemetry.addData("blue X pose is " + info.get(0), "inches");
         telemetry.addData("blue Y pose is " + info.get(1), "inches");

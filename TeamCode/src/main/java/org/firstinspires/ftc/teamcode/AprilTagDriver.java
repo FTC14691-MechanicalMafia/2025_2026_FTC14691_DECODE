@@ -146,9 +146,9 @@ public class AprilTagDriver {
                 targeting24 = Arrays.asList(range24,bearing24,elevation24);
 
                 telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
-                telemetry.addLine(String.format("XYZ (Pose):", pose24, "(inch)"));
-                telemetry.addLine(String.format("PRY (Rotation):", rotation24, "(deg)"));
-                telemetry.addLine(String.format("RBE (Targeting):", targeting24, "(inch, deg, deg)"));
+                telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", xPose24, yPose24, zPose24));
+                telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", pitch24, roll24, yaw24));
+                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", range24, bearing24, elevation24));
             }else {
                 telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
                 telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));

@@ -3,13 +3,20 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @TeleOp
 public class TeleOpMode extends OpMode {
 
-    private ElapsedTime runtime = new ElapsedTime();
+    /**
+     * This is the list of april tag ids that we care about.
+     */
+    public static final List<Integer> APRIL_TAG_IDS = Arrays.asList(20, 24);
+
     private DcMotor frontLeftDrive = null;
     private DcMotor backLeftDrive  = null;
     private DcMotor frontRightDrive = null;
@@ -75,29 +82,6 @@ public class TeleOpMode extends OpMode {
     @Override
     public void start() {
         super.start();
-
-        List<Double> info = aprilTagDriver.telemetryAprilTag();
-        //list data is (xPose, yPose, zPose, pitch, roll, yaw, range, bearing, elevation)
-        telemetry.addData("blue X pose is " + info.get(0), "inches");
-        telemetry.addData("blue Y pose is " + info.get(1), "inches");
-        telemetry.addData("blue Z pose is " + info.get(2), "inches");
-        telemetry.addData("blue Pitch is " + info.get(3), "degrees");
-        telemetry.addData("blue Roll is " + info.get(4), "degrees");
-        telemetry.addData("blue Yaw is " + info.get(5), "degrees");
-        telemetry.addData("blue Range is " + info.get(6), "inches");
-        telemetry.addData("blue Bearing is " + info.get(7), "degrees");
-        telemetry.addData("blue Elevation is " + info.get(8), "inches");
-
-        telemetry.addData("red X pose is " + info.get(9), "inches");
-        telemetry.addData("red Y pose is " + info.get(10), "inches");
-        telemetry.addData("red Z pose is " + info.get(11), "inches");
-        telemetry.addData("red Pitch is " + info.get(12), "degrees");
-        telemetry.addData("red Roll is " + info.get(13), "degrees");
-        telemetry.addData("red Yaw is " + info.get(14), "degrees");
-        telemetry.addData("red Range is " + info.get(15), "inches");
-        telemetry.addData("red Bearing is " + info.get(16), "degrees");
-        telemetry.addData("red Elevation is " + info.get(17), "inches");
-        // TODO - establish our coordinates / location from the april tag
     }
 
     @Override
@@ -167,27 +151,31 @@ public class TeleOpMode extends OpMode {
         telemetry.addLine("Outtake: Offline");
         telemetry.addLine("Distance: Offline");
 
-        List<Double> info = aprilTagDriver.telemetryAprilTag();
-
-        telemetry.addData("blue X pose is " + info.get(0), "inches");
-        telemetry.addData("blue Y pose is " + info.get(1), "inches");
-        telemetry.addData("blue Z pose is " + info.get(2), "inches");
-        telemetry.addData("blue Pitch is " + info.get(3), "degrees");
-        telemetry.addData("blue Roll is " + info.get(4), "degrees");
-        telemetry.addData("blue Yaw is " + info.get(5), "degrees");
-        telemetry.addData("blue Range is " + info.get(6), "inches");
-        telemetry.addData("blue Bearing is " + info.get(7), "degrees");
-        telemetry.addData("blue Elevation is " + info.get(8), "inches");
-        telemetry.addData("red X pose is " + info.get(9), "inches");
-        telemetry.addData("red Y pose is " + info.get(10), "inches");
-        telemetry.addData("red Z pose is " + info.get(11), "inches");
-        telemetry.addData("red Pitch is " + info.get(12), "degrees");
-        telemetry.addData("red Roll is " + info.get(13), "degrees");
-        telemetry.addData("red Yaw is " + info.get(14), "degrees");
-        telemetry.addData("red Range is " + info.get(15), "inches");
-        telemetry.addData("red Bearing is " + info.get(16), "degrees");
-        telemetry.addData("red Elevation is " + info.get(17), "inches");
-
+        final List<AprilTag> aprilTags = aprilTagDriver.detectAprilTags();
+        telemetry.addLine("AT IDs: " +
+                aprilTags.stream()
+                        // sort by the id values
+                        .sorted(Comparator.comparing(AprilTag::getId))
+                        // convert the april tag to its ID as a string
+                        .map(aprilTag -> String.valueOf(aprilTag.getId()))
+                        // join the ids together separated by a comma
+                        .collect(Collectors.joining(","))
+        );
+        // print the tags we care about to telemetry
+        aprilTags.stream()
+                // filter the stream to the tags we want
+                .filter(aprilTag -> APRIL_TAG_IDS.contains(aprilTag.getId()))
+                        .forEach(aprilTag -> {
+                            telemetry.addData(aprilTag.getId() + " X pose is " + aprilTag.getPose().getX(), "inches");
+                            telemetry.addData(aprilTag.getId() + " Y pose is " + aprilTag.getPose().getY(), "inches");
+                            telemetry.addData(aprilTag.getId() + " Z pose is " + aprilTag.getPose().getX(), "inches");
+                            telemetry.addData(aprilTag.getId() + " Pitch is " + aprilTag.getRotation().getPitch(), "degrees");
+                            telemetry.addData(aprilTag.getId() + " Roll is " + aprilTag.getRotation().getRoll(), "degrees");
+                            telemetry.addData(aprilTag.getId() + " Yaw is " + aprilTag.getRotation().getYaw(), "degrees");
+                            telemetry.addData(aprilTag.getId() + " Range is " + aprilTag.getTargetting().getRange(), "inches");
+                            telemetry.addData(aprilTag.getId() + " Bearing is " + aprilTag.getTargetting().getBearing(), "degrees");
+                            telemetry.addData(aprilTag.getId() + " Elevation is " + aprilTag.getTargetting().getElevation(), "inches");
+                        });
 
         // update telemetry
         telemetry.update();

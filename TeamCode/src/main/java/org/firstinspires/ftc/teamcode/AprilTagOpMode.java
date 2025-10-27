@@ -56,15 +56,15 @@ public class AprilTagOpMode extends OpMode {
                 // filter the stream to the tags we want
                 .filter(aprilTag -> APRIL_TAG_IDS.contains(aprilTag.getId()))
                 .forEach(aprilTag -> {
-                    telemetry.addData(aprilTag.getId() + " X pose is " + aprilTag.getPose().getX(), "inches");
-                    telemetry.addData(aprilTag.getId() + " Y pose is " + aprilTag.getPose().getY(), "inches");
-                    telemetry.addData(aprilTag.getId() + " Z pose is " + aprilTag.getPose().getX(), "inches");
-                    telemetry.addData(aprilTag.getId() + " Pitch is " + aprilTag.getRotation().getPitch(), "degrees");
-                    telemetry.addData(aprilTag.getId() + " Roll is " + aprilTag.getRotation().getRoll(), "degrees");
-                    telemetry.addData(aprilTag.getId() + " Yaw is " + aprilTag.getRotation().getYaw(), "degrees");
-                    telemetry.addData(aprilTag.getId() + " Range is " + aprilTag.getTargetting().getRange(), "inches");
-                    telemetry.addData(aprilTag.getId() + " Bearing is " + aprilTag.getTargetting().getBearing(), "degrees");
-                    telemetry.addData(aprilTag.getId() + " Elevation is " + aprilTag.getTargetting().getElevation(), "inches");
+                    telemetry.addLine(String.format("%s X pose is %.2f inches", aprilTag.getId(), aprilTag.getPose().getX()));
+                    telemetry.addLine(String.format("%s Y pose is %.2f inches", aprilTag.getId(), aprilTag.getPose().getY()));
+                    telemetry.addLine(String.format("%s Z pose is %.2f inches", aprilTag.getId(), aprilTag.getPose().getX()));
+                    telemetry.addLine(String.format("%s Pitch is %.2f degrees", aprilTag.getId(), aprilTag.getRotation().getPitch()));
+                    telemetry.addLine(String.format("%s Roll is %.2f degrees", aprilTag.getId(), aprilTag.getRotation().getRoll()));
+                    telemetry.addLine(String.format("%s Yaw is %.2f degrees", aprilTag.getId(), aprilTag.getRotation().getYaw()));
+                    telemetry.addLine(String.format("%s Range is %.2f inches",aprilTag.getId(), aprilTag.getTargetting().getRange()));
+                    telemetry.addLine(String.format("%s Bearing is %.2f degrees", aprilTag.getId(), aprilTag.getTargetting().getBearing()));
+                    telemetry.addLine(String.format("%s Elevation is %.2f degrees", aprilTag.getId(), aprilTag.getTargetting().getElevation()));
                 });
 
         // update telemetry

@@ -33,10 +33,11 @@ public class AprilTagDriver {
     }
 
     public void initAprilTag() {
-        double fx = 10;//x-direction focal length
-        double fy = 10;//y-direction focal length
-        double cx = 5;//principal point x coord
-        double cy = 5;//principal point y coord
+        //suggest fx = 482.757, fy = 482.757, cx = 270.511, cy = 196.022
+        double fx = 2000;//x-direction focal length
+        double fy = 600;//y-direction focal length
+        double cx = 300;//principal point x coord
+        double cy = 300;//principal point y coord
         manualControl = new ManualControlOpMode();
         processor = new AprilTagProcessor.Builder()
                 .setLensIntrinsics(fx, fy, cx, cy)
@@ -61,6 +62,7 @@ public class AprilTagDriver {
         telemetry.addData("Number AprilTags Detected", currentDetections.size());
 
         // handle all of the detections
+        double trunNum = 0.01;
         final List<AprilTag> aprilTags = currentDetections.stream()
                 .map(detection -> {
                     final Pose pose = new Pose(detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z);

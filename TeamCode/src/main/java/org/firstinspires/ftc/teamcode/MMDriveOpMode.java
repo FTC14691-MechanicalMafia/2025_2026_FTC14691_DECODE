@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import org.firstinspires.ftc.teamcode.AprilTagDriver;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +19,7 @@ public abstract class MMDriveOpMode extends OpMode {
     protected DcMotor backRightDrive = null;
     protected DcMotor intakeDrive = null;
     protected DcMotor outtakeDrive = null;
-    protected AprilTagDriver aprilTagDriver = null;
+    protected AprilTagDriver aprilTagDrive = null;
     private Servo aimServo = null;
 
     @Override
@@ -48,8 +49,8 @@ public abstract class MMDriveOpMode extends OpMode {
         telemetry.addLine("Pinpoint: Offline");
         // TODO - April tag stuff (camera)
         if (RobotConstants.CAMERA_ENABLED) {
-            aprilTagDriver = new AprilTagDriver(telemetry, hardwareMap);
-            aprilTagDriver.initAprilTag();
+            aprilTagDrive = new AprilTagDriver(telemetry, hardwareMap);
+            aprilTagDrive.initAprilTag();
         }
 
         telemetry.addLine("Camera: Offline");

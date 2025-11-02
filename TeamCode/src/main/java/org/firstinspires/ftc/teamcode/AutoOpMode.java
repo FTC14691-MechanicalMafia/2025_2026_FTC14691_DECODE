@@ -37,17 +37,23 @@ public class AutoOpMode extends MMDriveOpMode {
     final double MAX_AUTO_SPEED = 0.5;   //  Clip the approach speed to this max value (adjust for your robot)
     final double MAX_AUTO_STRAFE= 0.5;   //  Clip the strafing speed to this max value (adjust for your robot)
     final double MAX_AUTO_TURN  = 0.3;   //  Clip the turn speed to this max value (adjust for your robot)
-
+    AprilTagDriver aprilTag;
     private DcMotor frontLeftDrive = null;  //  Used to control the left front drive wheel
     private DcMotor frontRightDrive = null;  //  Used to control the right front drive wheel
     private DcMotor backLeftDrive = null;  //  Used to control the left back drive wheel
     private DcMotor backRightDrive = null;  //  Used to control the right back drive wheel
 
     private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera
-    private static final int DESIRED_TAG_ID = -1;     // Choose the tag you want to approach or set to -1 for ANY tag.
-    private VisionPortal visionPortal;               // Used to manage the video source.
-    private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
+
+    private static int DESIRED_TAG_ID = -1;     // Choose the tag you want to approach or set to -1 for ANY tag.
+    //make it possible to change DESIRED_TAG_ID to reflect which team we are on
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
+    public void init(){
+        //determine team of robot based on AprilTags it sees
+        /*if(aprilTag.detectAprilTags() == 20){
+
+        }*/
+    }
     public void loop()
     {
         boolean targetFound     = false;    // Set to true when an AprilTag target is detected
@@ -56,7 +62,7 @@ public class AutoOpMode extends MMDriveOpMode {
         double  turn            = 0;        // Desired turning power/speed (-1 to +1)
 
         // Initialize the Apriltag Detection process
-        aprilTagDriver.initAprilTag();
+        aprilTag.initAprilTag();
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must match the names assigned during the robot configuration.

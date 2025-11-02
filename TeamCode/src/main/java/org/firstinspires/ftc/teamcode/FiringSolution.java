@@ -3,7 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 public class FiringSolution {
-    public static void Calc(double Height, double Distance, double minAngle, double maxAngle, double maxVelocity, double angleRate, double velocityRate){//advanced calc version
+    public static void calc(AprilTag aprilTag){//advanced calc version
+        double Distance = aprilTag.getPose().getX();
+        double Height = aprilTag.getPose().getY();
+        double angleRate = 0.001;
+        double velocityRate = 0.001;
+        double minAngle = 0;
+        double maxAngle = 45;
+        double maxVelocity = 40;
         int b = 0;
         double v = -0.1;
         double a = -32.0; //acceleration due to gravity

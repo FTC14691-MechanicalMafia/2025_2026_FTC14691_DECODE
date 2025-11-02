@@ -18,7 +18,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-public class AutoOpMode extends OpMode {
+public class AutoOpMode extends MMDriveOpMode {
     // Adjust these numbers to suit your robot.
     final double DESIRED_DISTANCE = 12.0; //  this is how close the camera should get to the target (inches)
 
@@ -43,10 +43,6 @@ public class AutoOpMode extends OpMode {
     private VisionPortal visionPortal;               // Used to manage the video source.
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
-
-    public void init(){
-
-    }
     public void loop()
     {
         boolean targetFound     = false;    // Set to true when an AprilTag target is detected

@@ -16,10 +16,14 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.teamcode.AprilTagDriver;
-
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 public class AutoOpMode extends MMDriveOpMode {
+    double DRIVE_RATE = 1.0/2;
+    double STRAFE_RATE = 1.0/2;
+    double TURN_RATE = 1.0/3;
+
     // Adjust these numbers to suit your robot.
     final double DESIRED_DISTANCE = 12.0; //  this is how close the camera should get to the target (inches)
 
@@ -129,9 +133,9 @@ public class AutoOpMode extends MMDriveOpMode {
             } else {
 
                 // drive using manual POV Joystick mode.  Slow things down to make the robot more controlable.
-                drive  = -gamepad1.left_stick_y  / 2.0;  // Reduce drive rate to 50%.
-                strafe = -gamepad1.left_stick_x  / 2.0;  // Reduce strafe rate to 50%.
-                turn   = -gamepad1.right_stick_x / 3.0;  // Reduce turn rate to 33%.
+                drive  = -gamepad1.left_stick_y  * DRIVE_RATE;  // Reduce drive rate to 50%.
+                strafe = -gamepad1.left_stick_x  * STRAFE_RATE;  // Reduce strafe rate to 50%.
+                turn   = -gamepad1.right_stick_x * TURN_RATE;  // Reduce turn rate to 33%.
                 telemetry.addData("Manual","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
             }
             telemetry.update();

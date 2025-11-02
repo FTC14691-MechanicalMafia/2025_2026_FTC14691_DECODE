@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -21,6 +23,9 @@ public class TeleOpMode extends OpMode {
     private DcMotor backLeftDrive  = null;
     private DcMotor frontRightDrive = null;
     private DcMotor backRightDrive = null;
+    private DcMotor intakeDrive = null;
+    private DcMotor outtakeDrive = null;
+    private Servo aimServo = null;
     // private DcMotor intake = null;
     //private DcMotor outtake = null;
 
@@ -36,17 +41,18 @@ public class TeleOpMode extends OpMode {
         backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
         frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
         backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
+        intakeDrive = hardwareMap.get(DcMotor.class, "intake_drive");
+        outtakeDrive = hardwareMap.get(DcMotor.class, "outtake_drive");
 
         frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
-        frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
         backRightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
 
         // TODO - Init our pinpoint driver / dead wheels
         telemetry.addLine("Pinpoint: Offline");
@@ -93,8 +99,8 @@ public class TeleOpMode extends OpMode {
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
-        //intake.setPower(0);
-        //outtake.setPower(0);
+        intakeDrive.setPower(0);
+        outtakeDrive.setPower(0);
         // TODO - any final telemetry
     }
 
@@ -133,14 +139,15 @@ public class TeleOpMode extends OpMode {
 
 
         // Controller 2
+
         // TODO - Left stick aiming for distance (motor speed)
         // TODO - right stick aiming for distance angle
         // TODO - X for auto aiming (overrides driver)
         // TODO - L/RT for shoot ball
         // B for intake on/off
-        //intake.setPower(gamepad2.b ? 1.0 : 0.0);
+        intakeDrive.setPower(gamepad2.b ? 1.0 : 0.0);
         // A for outtake on/off
-        //outtake.setPower(gamepad2.a ? 1.0 : 0.0);
+        outtakeDrive.setPower(gamepad2.a ? 1.0 : 0.0);
 
         //update the coordinates
         telemetry.addLine("Mecanum: Offline");

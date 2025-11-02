@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AprilTagDriver {
-    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
     private AprilTagProcessor processor;
     private VisionPortal visionPortal;
     private ManualControlOpMode manualControl;
@@ -44,7 +43,7 @@ public class AprilTagDriver {
                 .build();
         VisionPortal.Builder builder = new VisionPortal.Builder()
                 .setCameraResolution(new Size(640, 480));
-        if (USE_WEBCAM) {
+        if (RobotConstants.CAMERA_ENABLED) {
             builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam"));
         } else {
             builder.setCamera(BuiltinCameraDirection.BACK);

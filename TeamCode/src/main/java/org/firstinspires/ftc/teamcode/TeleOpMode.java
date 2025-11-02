@@ -25,8 +25,7 @@ public class TeleOpMode extends OpMode {
     private DcMotor intakeDrive = null;
     private DcMotor outtakeDrive = null;
     private Servo aimServo = null;
-    // private DcMotor intake = null;
-    //private DcMotor outtake = null;
+
 
     private AprilTagDriver aprilTagDriver = null;
 
@@ -52,8 +51,7 @@ public class TeleOpMode extends OpMode {
             backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
-        intakeDrive = hardwareMap.get(DcMotor.class, "intake_drive");
-        outtakeDrive = hardwareMap.get(DcMotor.class, "outtake_drive");
+
         // TODO - Init our pinpoint driver / dead wheels
         telemetry.addLine("Pinpoint: Offline");
         // TODO - April tag stuff (camera)
@@ -66,16 +64,22 @@ public class TeleOpMode extends OpMode {
         // TODO - init color identification
         telemetry.addLine("Color: Offline");
         // Init intake
-        telemetry.addLine("Intake: Offline");
-        //intake = hardwareMap.get(DcMotor.class, "intake"); //CHANGE PLZ!!
-        //intake.setDirection(DcMotorSimple.Direction.FORWARD);
-        //intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+        if (RobotConstants.INTAKE_ENABLED) {
+            telemetry.addLine("Intake: Online");
+            intakeDrive = hardwareMap.get(DcMotor.class, "intake_drive");
+            intakeDrive.setDirection(DcMotor.Direction.FORWARD);
+            intakeDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        }
 
         //  init outtake
-        telemetry.addLine("Outtake: Offline");
-        //outtake = hardwareMap.get(DcMotor.class, "outtake"); //CHANGE PLZ!!
-        //outtake.setDirection(DcMotorSimple.Direction.FORWARD);
-        //outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+        if (RobotConstants.OUTTAKE_ENABLED) {
+            telemetry.addLine("Outtake: Online");
+            outtakeDrive = hardwareMap.get(DcMotor.class, "outtake_drive");
+            outtakeDrive.setDirection(DcMotor.Direction.FORWARD);
+            outtakeDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        }
 
         // TODO - init telemetry (display on the driver hub)
 
@@ -103,8 +107,12 @@ public class TeleOpMode extends OpMode {
             backLeftDrive.setPower(0);
             backRightDrive.setPower(0);
         }
-        intakeDrive.setPower(0);
-        outtakeDrive.setPower(0);
+        if (RobotConstants.INTAKE_ENABLED) {
+            intakeDrive.setPower(0);
+        }
+        if (RobotConstants.OUTTAKE_ENABLED) {
+            outtakeDrive.setPower(0);
+        }
         // TODO - any final telemetry
 
     }
@@ -152,10 +160,13 @@ public class TeleOpMode extends OpMode {
         // TODO - X for auto aiming (overrides driver)
         // TODO - L/RT for shoot ball
         // B for intake on/off
-        intakeDrive.setPower(gamepad2.b ? 1.0 : 0.0);
+        if (RobotConstants.INTAKE_ENABLED) {
+            intakeDrive.setPower(gamepad2.b ? 1.0 : 0.0);
+        }
         // A for outtake on/off
-        outtakeDrive.setPower(gamepad2.a ? 1.0 : 0.0);
-
+        if (RobotConstants.OUTTAKE_ENABLED) {
+            outtakeDrive.setPower(gamepad2.a ? 1.0 : 0.0);
+        }
         //update the coordinates
         telemetry.addLine("Mecanum: Offline");
         telemetry.addLine("Pinpoint: Offline");

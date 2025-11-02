@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.Arrays;
@@ -13,17 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @TeleOp
-@Config
 public class TeleOpMode extends OpMode {
-
-    public static class Params {
-        public static Boolean intakeEnabled = true;
-        public static Boolean outtakeEnabled = true;
-        public static Boolean driveEnabled = false;
-        public static Boolean cameraEnabled = false;
-    }
-
-    public static Params PARAMS = new Params();
 
     /**
      * This is the list of april tag ids that we care about.
@@ -48,7 +36,7 @@ public class TeleOpMode extends OpMode {
         telemetry.addLine("Mecanum: Offline");
 
         //init drive system
-        if (PARAMS.driveEnabled) {
+        if (RobotConstants.DRIVE_ENABLED) {
             frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
             backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
             frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
@@ -69,7 +57,7 @@ public class TeleOpMode extends OpMode {
         // TODO - Init our pinpoint driver / dead wheels
         telemetry.addLine("Pinpoint: Offline");
         // TODO - April tag stuff (camera)
-        if (PARAMS.cameraEnabled) {
+        if (RobotConstants.CAMERA_ENABLED) {
             aprilTagDriver = new AprilTagDriver(telemetry, hardwareMap);
             aprilTagDriver.initAprilTag();
         }
@@ -109,7 +97,7 @@ public class TeleOpMode extends OpMode {
         super.stop();
 
         // stop all motors
-        if (PARAMS.driveEnabled) {
+        if (RobotConstants.DRIVE_ENABLED) {
             frontLeftDrive.setPower(0);
             frontRightDrive.setPower(0);
             backLeftDrive.setPower(0);
@@ -149,7 +137,7 @@ public class TeleOpMode extends OpMode {
         backRightPower = (axial + lateral - yaw) * multiplier;
 
         // set the drive power
-        if (PARAMS.driveEnabled) {
+        if (RobotConstants.DRIVE_ENABLED) {
             frontLeftDrive.setPower(frontLeftPower);
             frontRightDrive.setPower(frontRightPower);
             backLeftDrive.setPower(backLeftPower);
@@ -177,7 +165,7 @@ public class TeleOpMode extends OpMode {
         telemetry.addLine("Outtake: Offline");
         telemetry.addLine("Distance: Offline");
 
-        if (PARAMS.cameraEnabled) {
+        if (RobotConstants.CAMERA_ENABLED) {
             final List<AprilTag> aprilTags = aprilTagDriver.detectAprilTags();
             telemetry.addLine("AT IDs: " +
                     aprilTags.stream()

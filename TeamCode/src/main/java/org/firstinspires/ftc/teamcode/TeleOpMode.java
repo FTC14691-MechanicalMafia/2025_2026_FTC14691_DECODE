@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -12,7 +13,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @TeleOp
+@Config
 public class TeleOpMode extends OpMode {
+
+    public static class Params {
+        public static Boolean intakeEnabled = true;
+        public static Boolean outtakeEnabled = true;
+        public static Boolean driveEnabled = false;
+        public static Boolean cameraEnabled = false;
+    }
+
+    public static Params PARAMS = new Params();
 
     /**
      * This is the list of april tag ids that we care about.
@@ -37,28 +48,31 @@ public class TeleOpMode extends OpMode {
         telemetry.addLine("Mecanum: Offline");
 
         //init drive system
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
+        if (PARAMS.driveEnabled) {
+            frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
+            backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
+            frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
+            backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
+
+            frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+            backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+            frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
+            backRightDrive.setDirection(DcMotor.Direction.REVERSE);
+
+            frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
         intakeDrive = hardwareMap.get(DcMotor.class, "intake_drive");
         outtakeDrive = hardwareMap.get(DcMotor.class, "outtake_drive");
-
-        frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
-        backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
-        frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
-        backRightDrive.setDirection(DcMotor.Direction.REVERSE);
-
-        frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
         // TODO - Init our pinpoint driver / dead wheels
         telemetry.addLine("Pinpoint: Offline");
         // TODO - April tag stuff (camera)
-        aprilTagDriver = new AprilTagDriver(telemetry, hardwareMap);
-        aprilTagDriver.initAprilTag();
+        if (PARAMS.cameraEnabled) {
+            aprilTagDriver = new AprilTagDriver(telemetry, hardwareMap);
+            aprilTagDriver.initAprilTag();
+        }
 
         telemetry.addLine("Camera: Offline");
         // TODO - init color identification
@@ -95,13 +109,16 @@ public class TeleOpMode extends OpMode {
         super.stop();
 
         // stop all motors
-        frontLeftDrive.setPower(0);
-        frontRightDrive.setPower(0);
-        backLeftDrive.setPower(0);
-        backRightDrive.setPower(0);
+        if (PARAMS.driveEnabled) {
+            frontLeftDrive.setPower(0);
+            frontRightDrive.setPower(0);
+            backLeftDrive.setPower(0);
+            backRightDrive.setPower(0);
+        }
         intakeDrive.setPower(0);
         outtakeDrive.setPower(0);
         // TODO - any final telemetry
+
     }
 
     @Override
@@ -132,10 +149,12 @@ public class TeleOpMode extends OpMode {
         backRightPower = (axial + lateral - yaw) * multiplier;
 
         // set the drive power
-        frontLeftDrive.setPower(frontLeftPower);
-        frontRightDrive.setPower(frontRightPower);
-        backLeftDrive.setPower(backLeftPower);
-        backRightDrive.setPower(backRightPower);
+        if (PARAMS.driveEnabled) {
+            frontLeftDrive.setPower(frontLeftPower);
+            frontRightDrive.setPower(frontRightPower);
+            backLeftDrive.setPower(backLeftPower);
+            backRightDrive.setPower(backRightPower);
+        }
 
 
         // Controller 2
@@ -158,32 +177,34 @@ public class TeleOpMode extends OpMode {
         telemetry.addLine("Outtake: Offline");
         telemetry.addLine("Distance: Offline");
 
-        final List<AprilTag> aprilTags = aprilTagDriver.detectAprilTags();
-        telemetry.addLine("AT IDs: " +
-                aprilTags.stream()
-                        // sort by the id values
-                        .sorted(Comparator.comparing(AprilTag::getId))
-                        // convert the april tag to its ID as a string
-                        .map(aprilTag -> String.valueOf(aprilTag.getId()))
-                        // join the ids together separated by a comma
-                        .collect(Collectors.joining(","))
-        );
-        // print the tags we care about to telemetry
-        aprilTags.stream()
-                // filter the stream to the tags we want
-                .filter(aprilTag -> APRIL_TAG_IDS.contains(aprilTag.getId()))
-                        .forEach(aprilTag -> {
-                            telemetry.addData(aprilTag.getId() + " X pose is " + aprilTag.getPose().getX(), "inches");
-                            telemetry.addData(aprilTag.getId() + " Y pose is " + aprilTag.getPose().getY(), "inches");
-                            telemetry.addData(aprilTag.getId() + " Z pose is " + aprilTag.getPose().getX(), "inches");
-                            telemetry.addData(aprilTag.getId() + " Pitch is " + aprilTag.getRotation().getPitch(), "degrees");
-                            telemetry.addData(aprilTag.getId() + " Roll is " + aprilTag.getRotation().getRoll(), "degrees");
-                            telemetry.addData(aprilTag.getId() + " Yaw is " + aprilTag.getRotation().getYaw(), "degrees");
-                            telemetry.addData(aprilTag.getId() + " Range is " + aprilTag.getTargetting().getRange(), "inches");
-                            telemetry.addData(aprilTag.getId() + " Bearing is " + aprilTag.getTargetting().getBearing(), "degrees");
-                            telemetry.addData(aprilTag.getId() + " Elevation is " + aprilTag.getTargetting().getElevation(), "inches");
-                        });
+        if (PARAMS.cameraEnabled) {
+            final List<AprilTag> aprilTags = aprilTagDriver.detectAprilTags();
+            telemetry.addLine("AT IDs: " +
+                    aprilTags.stream()
+                            // sort by the id values
+                            .sorted(Comparator.comparing(AprilTag::getId))
+                            // convert the april tag to its ID as a string
+                            .map(aprilTag -> String.valueOf(aprilTag.getId()))
+                            // join the ids together separated by a comma
+                            .collect(Collectors.joining(","))
+            );
+            // print the tags we care about to telemetry
+            aprilTags.stream()
+                    // filter the stream to the tags we want
+                    .filter(aprilTag -> APRIL_TAG_IDS.contains(aprilTag.getId()))
+                    .forEach(aprilTag -> {
+                        telemetry.addData(aprilTag.getId() + " X pose is " + aprilTag.getPose().getX(), "inches");
+                        telemetry.addData(aprilTag.getId() + " Y pose is " + aprilTag.getPose().getY(), "inches");
+                        telemetry.addData(aprilTag.getId() + " Z pose is " + aprilTag.getPose().getX(), "inches");
+                        telemetry.addData(aprilTag.getId() + " Pitch is " + aprilTag.getRotation().getPitch(), "degrees");
+                        telemetry.addData(aprilTag.getId() + " Roll is " + aprilTag.getRotation().getRoll(), "degrees");
+                        telemetry.addData(aprilTag.getId() + " Yaw is " + aprilTag.getRotation().getYaw(), "degrees");
+                        telemetry.addData(aprilTag.getId() + " Range is " + aprilTag.getTargetting().getRange(), "inches");
+                        telemetry.addData(aprilTag.getId() + " Bearing is " + aprilTag.getTargetting().getBearing(), "degrees");
+                        telemetry.addData(aprilTag.getId() + " Elevation is " + aprilTag.getTargetting().getElevation(), "inches");
+                    });
 
+        }
         // update telemetry
         telemetry.update();
     }

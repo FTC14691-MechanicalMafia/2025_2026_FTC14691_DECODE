@@ -26,13 +26,15 @@ public class TeleOpMode extends MMDriveOpMode {
         double frontRightPower;
         double backLeftPower;
         double backRightPower;
-        double multiplier = 0.75;
+        double multiplier;
         if (gamepad1.left_trigger < 0) {
             //  LT for slow
             multiplier = 0.5;
         } else if (gamepad1.right_trigger < 0) {
             //  RT for boost
             multiplier = 1;
+        }else {
+            multiplier = 0.75;
         }
         frontLeftPower = (axial + lateral + yaw) * multiplier;
         frontRightPower = (axial - lateral - yaw) * multiplier;

@@ -20,7 +20,7 @@ public class AprilTagOpMode extends OpMode {
 
     @Override
     public void init() {
-        // TODO - April tag stuff (camera)
+        // April tag stuff (camera)
         aprilTagDriver = new AprilTagDriver(telemetry, hardwareMap);
         aprilTagDriver.initAprilTag();
 

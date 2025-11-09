@@ -20,7 +20,8 @@ public abstract class MMDriveOpMode extends OpMode {
     protected DcMotor intakeDrive = null;
     protected DcMotor outtakeDrive = null;
     protected AprilTagDriver aprilTagDrive = null;
-    private Servo aimServo = null;
+    protected Servo aimServo = null;
+    protected Servo shootServo = null;
 
     @Override
     public void init() {
@@ -47,17 +48,18 @@ public abstract class MMDriveOpMode extends OpMode {
 
         // TODO - Init our pinpoint driver / dead wheels
         telemetry.addLine("Pinpoint: Offline");
-        // TODO - April tag stuff (camera)
+
+        // April tag stuff (camera)
         if (RobotConstants.CAMERA_ENABLED) {
             aprilTagDrive = new AprilTagDriver(telemetry, hardwareMap);
             aprilTagDrive.initAprilTag();
+            telemetry.addLine("Camera: Online");
         }
 
-        telemetry.addLine("Camera: Offline");
         // TODO - init color identification
         telemetry.addLine("Color: Offline");
-        // Init intake
 
+        // Init intake
         if (RobotConstants.INTAKE_ENABLED) {
             telemetry.addLine("Intake: Online");
             intakeDrive = hardwareMap.get(DcMotor.class, "intake_drive");
@@ -66,18 +68,19 @@ public abstract class MMDriveOpMode extends OpMode {
         }
 
         //  init outtake
-
         if (RobotConstants.OUTTAKE_ENABLED) {
             telemetry.addLine("Outtake: Online");
             outtakeDrive = hardwareMap.get(DcMotor.class, "outtake_drive");
             outtakeDrive.setDirection(DcMotor.Direction.FORWARD);
             outtakeDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        }
 
-        // TODO - init telemetry (display on the driver hub)
+            aimServo = hardwareMap.get(Servo.class, "outtake_aim");
+            aimServo.setPosition(RobotConstants.OUTTAKE_AIM_INIT_POS);
+        }
 
         // TODO - init distance sensors
         telemetry.addLine("Distance: Offline");
+
         // TODO - init indicator light; Note - no telemetry needed since this is its own status
 
         // init telemetry (display on the driver hub)

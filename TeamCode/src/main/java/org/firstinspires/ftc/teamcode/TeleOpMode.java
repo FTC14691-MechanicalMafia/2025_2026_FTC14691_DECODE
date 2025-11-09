@@ -49,22 +49,43 @@ public class TeleOpMode extends MMDriveOpMode {
             backRightDrive.setPower(backRightPower);
         }
 
-
         // Controller 2
 
-        // TODO - Left stick aiming for distance (motor speed)
-        // TODO - right stick aiming for distance angle
-        // TODO - X for auto aiming (overrides driver)
-        // TODO - L/RT for shoot ball
-        // B for intake on/off
+        // left trigger for intake on/off
         if (RobotConstants.INTAKE_ENABLED) {
-            intakeDrive.setPower(gamepad2.b ? 1.0 : 0.0);
+            intakeDrive.setPower(gamepad2.left_trigger > 0.5 ? 1.0 : 0.0);
         }
-        // A for outtake on/off
+
+        // right trigger for outtake on/off
         if (RobotConstants.OUTTAKE_ENABLED) {
-            outtakeDrive.setPower(gamepad2.a ? 1.0 : 0.0);
+            // Dpad left (slower) right (faster) outtake motor speed
+            if (gamepad2.dpad_left) {
+                outtakeDrive.setPower(outtakeDrive.getPower() - .1);
+            }
+            if (gamepad2.dpad_right) {
+                outtakeDrive.setPower(outtakeDrive.getPower() + .1);
+            }
+            //  right stick up/down aiming for distance angle (hood angle) - servo
+            if (gamepad2.right_stick_y != 0) {
+                // if the stick is at -1 (bottom) assume that is the start position
+                // if the stick is at 1 (top) assume that it should be at the max position
+                // using exponential regression
+                // TODO - calculate the exponential regression on init based on the configured variables
+                aimServo.setPosition(0.1869 * Math.pow(5.35521, gamepad2.right_stick_y));
+            }
+
+            //  RT for shoot ball - servo
+            if (gamepad2.right_trigger > 0) {
+                shootServo.setPosition(RobotConstants.OUTAKE_SHOOT_LAUNCH_POS);
+            } else {
+                shootServo.setPosition(RobotConstants.OUTTAKE_SHOOT_REST_POS);
+            }
+
+            // TODO - X for auto aiming (overrides driver)
+
         }
-        //update the coordinates
+
+        // TODO - update the telemetry
         telemetry.addLine("Mecanum: Offline");
         telemetry.addLine("Pinpoint: Offline");
         telemetry.addLine("Camera: Offline");
@@ -73,6 +94,7 @@ public class TeleOpMode extends MMDriveOpMode {
         telemetry.addLine("Outtake: Offline");
         telemetry.addLine("Distance: Offline");
 
+        // Check for april tags
         if (RobotConstants.CAMERA_ENABLED) {
             final List<AprilTag> aprilTags = aprilTagDrive.detectAprilTags();
             telemetry.addLine("AT IDs: " +
@@ -101,6 +123,7 @@ public class TeleOpMode extends MMDriveOpMode {
                     });
 
         }
+
         // update telemetry
         telemetry.update();
     }

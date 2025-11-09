@@ -21,11 +21,11 @@ public class RobotConstants {
      * For the out take aiming servo, what position should it move to?
      * Note: This will also be the base position that other positions are calculated off of
      */
-    public static final double OUTTAKE_AIM_INIT_POS = 0;
-    public static final double OUTTAKE_AIM_MIN_POS = 0;
-    public static final double OUTTAKE_AIM_MAX_POS = 0.1;
-    public static final double OUTAKE_SHOOT_LAUNCH_POS = .5;
-    public static final double OUTTAKE_SHOOT_REST_POS = 0;
+    public static double OUTTAKE_AIM_INIT_POS = 0;
+    public static double OUTTAKE_AIM_MIN_POS = 0;
+    public static double OUTTAKE_AIM_MAX_POS = 0.1;
+    public static double OUTAKE_SHOOT_LAUNCH_POS = .5;
+    public static double OUTTAKE_SHOOT_REST_POS = 0;
 
 
     /**

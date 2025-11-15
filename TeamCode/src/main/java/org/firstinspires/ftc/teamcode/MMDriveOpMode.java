@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.AprilTagDriver;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.*;
 
 public abstract class MMDriveOpMode extends OpMode {
     /**
@@ -111,5 +112,19 @@ public abstract class MMDriveOpMode extends OpMode {
         }
         // TODO - any final telemetry
 
+    }
+    public Integer autoAim(){
+        //returns -1 for left turns, 0 for on target & 1 for right turns, null for no apriltag
+        List<AprilTag> aprilTags = aprilTagDrive.detectAprilTags();
+        aprilTags.stream()
+                .filter(aprilTag -> APRIL_TAG_IDS.contains(aprilTag.getId()));
+        AprilTag tag = aprilTags.get(0);
+        int angle = (int) Math.round(tag.getTargetting().getBearing());
+        int power = 0;
+        //TODO - make the margin configurable
+        if(Math.abs(angle) > 2) {//2 is the margin of error on either side, can be changed with the circumstances
+            power = angle/Math.abs(angle);
+        }
+        return power;
     }
 }

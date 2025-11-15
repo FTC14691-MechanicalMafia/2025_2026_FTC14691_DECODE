@@ -90,7 +90,6 @@ public class TeleOpMode extends MMDriveOpMode {
                 shootServo.setPosition(RobotConstants.OUTTAKE_SHOOT_REST_POS);
             }
 
-            // TODO - X for auto aiming (overrides driver)
 
         }
 
@@ -116,21 +115,24 @@ public class TeleOpMode extends MMDriveOpMode {
                             .collect(Collectors.joining(","))
             );
             // print the tags we care about to telemetry
-            aprilTags.stream()
-                    // filter the stream to the tags we want
-                    .filter(aprilTag -> APRIL_TAG_IDS.contains(aprilTag.getId()))
-                    .forEach(aprilTag -> {
-                        telemetry.addData(aprilTag.getId() + " X pose is " + aprilTag.getPose().getX(), "inches");
-                        telemetry.addData(aprilTag.getId() + " Y pose is " + aprilTag.getPose().getY(), "inches");
-                        telemetry.addData(aprilTag.getId() + " Z pose is " + aprilTag.getPose().getX(), "inches");
-                        telemetry.addData(aprilTag.getId() + " Pitch is " + aprilTag.getRotation().getPitch(), "degrees");
-                        telemetry.addData(aprilTag.getId() + " Roll is " + aprilTag.getRotation().getRoll(), "degrees");
-                        telemetry.addData(aprilTag.getId() + " Yaw is " + aprilTag.getRotation().getYaw(), "degrees");
-                        telemetry.addData(aprilTag.getId() + " Range is " + aprilTag.getTargetting().getRange(), "inches");
-                        telemetry.addData(aprilTag.getId() + " Bearing is " + aprilTag.getTargetting().getBearing(), "degrees");
-                        telemetry.addData(aprilTag.getId() + " Elevation is " + aprilTag.getTargetting().getElevation(), "inches");
-                    });
-
+            if(gamepad2.a) {
+                //allows pilots to control whether data is presented
+                //doesnt need to be pad 2 button a
+                aprilTags.stream()
+                        // filter the stream to the tags we want
+                        .filter(aprilTag -> APRIL_TAG_IDS.contains(aprilTag.getId()))
+                        .forEach(aprilTag -> {
+                            telemetry.addData(aprilTag.getId() + " X pose is " + aprilTag.getPose().getX(), "inches");
+                            telemetry.addData(aprilTag.getId() + " Y pose is " + aprilTag.getPose().getY(), "inches");
+                            telemetry.addData(aprilTag.getId() + " Z pose is " + aprilTag.getPose().getX(), "inches");
+                            telemetry.addData(aprilTag.getId() + " Pitch is " + aprilTag.getRotation().getPitch(), "degrees");
+                            telemetry.addData(aprilTag.getId() + " Roll is " + aprilTag.getRotation().getRoll(), "degrees");
+                            telemetry.addData(aprilTag.getId() + " Yaw is " + aprilTag.getRotation().getYaw(), "degrees");
+                            telemetry.addData(aprilTag.getId() + " Range is " + aprilTag.getTargetting().getRange(), "inches");
+                            telemetry.addData(aprilTag.getId() + " Bearing is " + aprilTag.getTargetting().getBearing(), "degrees");
+                            telemetry.addData(aprilTag.getId() + " Elevation is " + aprilTag.getTargetting().getElevation(), "inches");
+                        });
+            }
         }
 
         // update telemetry

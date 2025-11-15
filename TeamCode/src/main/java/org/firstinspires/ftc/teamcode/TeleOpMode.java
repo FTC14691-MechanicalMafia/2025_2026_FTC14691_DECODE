@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -101,10 +103,16 @@ public class TeleOpMode extends MMDriveOpMode {
         // TODO - update the telemetry
         telemetry.addLine("Mecanum: Offline");
         telemetry.addLine("Pinpoint: Offline");
+        if(true){//replace with a check of whether camera works
+        telemetry.addLine("Camera: Online");
+        } else {
         telemetry.addLine("Camera: Offline");
+        }
         telemetry.addLine("Color: Offline");
+
         telemetry.addLine("Intake: Offline");
         telemetry.addLine("Outtake: Offline");
+
         telemetry.addLine("Distance: Offline");
 
         // Check for april tags

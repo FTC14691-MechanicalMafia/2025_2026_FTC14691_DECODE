@@ -113,18 +113,33 @@ public abstract class MMDriveOpMode extends OpMode {
         // TODO - any final telemetry
 
     }
+
+    /**
+     * Returns a power to use for turning based on with april tag (blue or red) it currently sees.
+     * This should orient the robot towards that april tag if used consistently in the main loop.
+     * @return 0 if there is no tag, or already aimed within in the margin.  A value between -1 and 1 (not 0) that indicates the power to use.
+     */
     public Integer autoAim(){
         //returns -1 for left turns, 0 for on target & 1 for right turns, null for no apriltag
         List<AprilTag> aprilTags = aprilTagDrive.detectAprilTags();
-        aprilTags.stream()
-                .filter(aprilTag -> APRIL_TAG_IDS.contains(aprilTag.getId()));
-        AprilTag tag = aprilTags.get(0);
-        int angle = (int) Math.round(tag.getTargetting().getBearing());
+        Optional<AprilTag> optionalAprilTag = aprilTags.stream()
+                .filter(aprilTag -> APRIL_TAG_IDS.contains(aprilTag.getId()))
+                .findFirst();
+
+        // set our default power
         int power = 0;
-        //TODO - make the margin configurable
-        if(Math.abs(angle) > 2) {//2 is the margin of error on either side, can be changed with the circumstances
-            power = angle/Math.abs(angle);
+
+        // calculate the angles if we found a tag we care about
+        if (optionalAprilTag.isPresent()) {
+            AprilTag tag = optionalAprilTag.get();
+            int angle = (int) Math.round(tag.getTargetting().getBearing());
+            //TODO - make the margin configurable
+            if (Math.abs(angle) > 2) {//2 is the margin of error on either side, can be changed with the circumstances
+                power = angle / Math.abs(angle);
+            }
         }
+
+        //return whatever power we determined
         return power;
     }
 }

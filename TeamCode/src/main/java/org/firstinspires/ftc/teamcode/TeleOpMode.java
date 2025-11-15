@@ -14,21 +14,26 @@ import java.util.stream.Collectors;
 public class TeleOpMode extends MMDriveOpMode {
 
     public void loop() {
+        // Get any april tags that are visible this loop
         List<AprilTag> tags = aprilTagDrive.detectAprilTags();
+
         // Controller 1
         // implement left stick for mechanic forward/strafe
         double axial = -gamepad1.left_stick_x;  // Note: pushing stick forward gives negative value
         axial = (axial/Math.abs(axial)) * Math.pow(Math.abs(axial), 2);
+
         //finds whether direction is pos or neg then multiplies by the adjusted value
-        double lateral = (gamepad1.left_stick_x);
+        double lateral = gamepad1.left_stick_x;
         lateral = (lateral/Math.abs(lateral)) * Math.pow(Math.abs(lateral), 2);
-        // implement right stick for rotation
+
+        // implement right stick for rotation; this includes any auto-aiming movement
         int autoAimPower = autoAim();
-        double yaw = (gamepad1.right_stick_x);
+        double yaw = gamepad1.right_stick_x;
         yaw = (yaw/Math.abs(yaw)) * Math.pow(Math.abs(yaw), 2);
-        if(gamepad2.x && autoAimPower > 0) {
+        if(gamepad2.x && autoAimPower > 0) { // check if autoaim is pushed and we have something to aim at
             yaw = autoAimPower;
         }
+
         //to create adjustment curve, use Math.pow(2, gamepad#.stick - 1);
         //if yaw = 0, give the all clear to shoot
         double frontLeftPower;

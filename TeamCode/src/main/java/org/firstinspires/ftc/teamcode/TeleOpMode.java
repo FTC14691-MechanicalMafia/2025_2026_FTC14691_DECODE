@@ -101,18 +101,26 @@ public class TeleOpMode extends MMDriveOpMode {
         }
 
         // TODO - update the telemetry
-        telemetry.addLine("Mecanum: Offline");
-        telemetry.addLine("Pinpoint: Offline");
-        if(true){//replace with a check of whether camera works
-        telemetry.addLine("Camera: Online");
+        if(true){//replace with a check of whether Mecanum works
+            telemetry.addLine("Mecanum: Online");
         } else {
-        telemetry.addLine("Camera: Offline");
+            telemetry.addLine("Mecanum: Offline");
+        }        if(true){//replace with a check of whether pinpoint works
+            telemetry.addLine("Pinpoint: Online");
+        } else {
+            telemetry.addLine("Pinpoint: Offline");
+        }        if(true){//replace with a check of whether camera works
+            telemetry.addLine("Camera: Online");
+        } else {
+            telemetry.addLine("Camera: Offline");
         }
-        telemetry.addLine("Color: Offline");
-
-        telemetry.addLine("Intake: Offline");
-        telemetry.addLine("Outtake: Offline");
-
+        if(true){//replace with a check of whether Color sensor works
+            telemetry.addLine("Color: Online");
+        } else {
+            telemetry.addLine("Color: Offline");
+        }
+        telemetry.addLine("Intake: " + status(intakeDrive));
+        telemetry.addLine("Outtake: " + status(outtakeDrive));
         telemetry.addLine("Distance: Offline");
 
         // Check for april tags
@@ -150,5 +158,12 @@ public class TeleOpMode extends MMDriveOpMode {
 
         // update telemetry
         telemetry.update();
+    }
+    public String status(DcMotor motor){
+        String stat = "Offline";
+        if(motor.getPower() > 0){
+            stat = "Online";
+        }
+        return stat;
     }
 }

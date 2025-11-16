@@ -57,6 +57,15 @@ public class TeleOpMode extends MMDriveOpMode {
         backLeftPower = (axial - lateral + yaw) * multiplier;
         backRightPower = (axial + lateral - yaw) * multiplier;
 
+        /*
+        double absPower = Math.min(Math.abs(frontLeftPower), Math.abs(frontRightPower));
+        absPower =  Math.min(absPower, Math.abs(backLeftPower));
+        absPower = Math.min(absPower, Math.abs(backRightPower));
+        frontLeftPower = frontLeftPower/Math.abs(frontLeftPower) * absPower;
+        frontRightPower = frontRightPower/Math.abs(frontRightPower) * absPower;
+        backLeftPower = backLeftPower/Math.abs(backLeftPower) * absPower;
+        backRightPower = backRightPower/Math.abs(backRightPower) * absPower;
+        */
         // set the drive power
         if (RobotConstants.DRIVE_ENABLED) {
             frontLeftDrive.setPower(frontLeftPower);

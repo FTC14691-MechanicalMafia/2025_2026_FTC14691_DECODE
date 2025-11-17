@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.AprilTagDriver;
 
@@ -36,10 +37,10 @@ public abstract class MMDriveOpMode extends OpMode {
             frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
             backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
 
-            frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
-            backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
-            frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
-            backRightDrive.setDirection(DcMotor.Direction.REVERSE);
+            frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+            backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+            frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
+            backRightDrive.setDirection(DcMotor.Direction.FORWARD);
 
             frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

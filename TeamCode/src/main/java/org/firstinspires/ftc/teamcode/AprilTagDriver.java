@@ -15,6 +15,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class AprilTagDriver {
@@ -63,6 +64,7 @@ public class AprilTagDriver {
         // handle all of the detections
         double trunNum = 0.01;
         final List<AprilTag> aprilTags = currentDetections.stream()
+                .filter(Objects::nonNull)
                 .map(detection -> {
                     final Pose pose = new Pose(detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z);
                     final Rotation rotation = new Rotation(detection.ftcPose.roll, detection.ftcPose.pitch, detection.ftcPose.yaw);

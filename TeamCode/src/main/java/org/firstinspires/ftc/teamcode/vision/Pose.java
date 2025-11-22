@@ -1,6 +1,5 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.vision;
 
-import org.firstinspires.ftc.teamcode.AprilTagDriver;
 public class Pose {
 
     private final Double x;

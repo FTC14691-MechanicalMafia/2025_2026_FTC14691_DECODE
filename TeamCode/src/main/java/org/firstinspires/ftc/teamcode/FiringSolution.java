@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
+import org.firstinspires.ftc.teamcode.vision.AprilTag;
+
 public class FiringSolution {
     public static void calc(AprilTag aprilTag){//advanced calc version
         double Distance = aprilTag.getPose().getX();

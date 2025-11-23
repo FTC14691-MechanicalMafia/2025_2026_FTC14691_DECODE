@@ -22,22 +22,25 @@ public class TeleOpMode extends MMDriveOpMode {
 
         // Controller 1
         // implement left stick for mechanic forward/strafe
-        double axial = -gamepad1.left_stick_x;  // Note: pushing stick forward gives negative value
-        //axial = (axial/Math.abs(axial)) * Math.pow(Math.abs(axial), 2);
+        double axial   = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
+
 
         //finds whether direction is pos or neg then multiplies by the adjusted value
         double lateral = (gamepad1.left_stick_x);
-        //lateral = (lateral/Math.abs(lateral)) * Math.pow(Math.abs(lateral), 2);
 
         // implement right stick for rotation
-        int autoAimPower = 0;
+        double autoAimPower = 0;
         if (RobotConstants.CAMERA_ENABLED) {
             autoAimPower = autoAim();
         }
         double yaw = (gamepad1.right_stick_x);
         if (RobotConstants.CAMERA_ENABLED) {
-            yaw = (yaw / Math.abs(yaw)) * Math.pow(Math.abs(yaw), 2);
-            if (gamepad2.x && autoAimPower > 0) { // check if autoaim is pushed and we have something to aim at
+            if (yaw != 0) {
+                yaw = (yaw / Math.abs(yaw)) * Math.pow(Math.abs(yaw), 2);
+            } else {
+                yaw = 0;
+            }
+            if (gamepad2.x && Math.abs(autoAimPower) > 0) { // check if autoaim is pushed and we have something to aim at
                 yaw = autoAimPower;
             }
         }
@@ -134,9 +137,15 @@ public class TeleOpMode extends MMDriveOpMode {
         } else {
             telemetry.addLine("Color: Offline");
         }
-        telemetry.addLine("Intake: " + status(intakeDrive));
-        telemetry.addLine("Outtake: " + status(outtakeDrive));
+        if (RobotConstants.INTAKE_ENABLED) {
+            telemetry.addLine("Intake: " + status(intakeDrive));
+        }
+        if (RobotConstants.OUTTAKE_ENABLED) {
+            telemetry.addLine("Outtake: " + status(outtakeDrive));
+        }
         telemetry.addLine("Distance: Offline");
+
+        telemetry.addLine(toString().valueOf(autoAimPower));
 
         // Check for april tags
         if (RobotConstants.CAMERA_ENABLED) {

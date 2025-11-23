@@ -39,10 +39,10 @@ public abstract class MMDriveOpMode extends OpMode {
             frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
             backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
 
-            frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-            backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-            frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
-            backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+            frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+            backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+            frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
+            backRightDrive.setDirection(DcMotor.Direction.REVERSE);
 
             frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -122,7 +122,7 @@ public abstract class MMDriveOpMode extends OpMode {
      * This should orient the robot towards that april tag if used consistently in the main loop.
      * @return 0 if there is no tag, or already aimed within in the margin.  A value between -1 and 1 (not 0) that indicates the power to use.
      */
-    public Integer autoAim(){
+    public Double autoAim(){
         //returns -1 for left turns, 0 for on target & 1 for right turns, null for no apriltag
         List<AprilTag> aprilTags = aprilTagDrive.detectAprilTags();
         Optional<AprilTag> optionalAprilTag = aprilTags.stream()
@@ -130,15 +130,15 @@ public abstract class MMDriveOpMode extends OpMode {
                 .findFirst();
 
         // set our default power
-        int power = 0;
+        double power = 0;
 
         // calculate the angles if we found a tag we care about
         if (optionalAprilTag.isPresent()) {
             AprilTag tag = optionalAprilTag.get();
             int angle = (int) Math.round(tag.getTargetting().getBearing());
             //TODO - make the margin configurable
-            if (Math.abs(angle) > 2) {//2 is the margin of error on either side, can be changed with the circumstances
-                power = angle / Math.abs(angle);
+            if (Math.abs(angle) > 1) {//2 is the margin of error on either side, can be changed with the circumstances
+                power = angle * Math.abs(angle)*0.1 / -Math.abs(angle);
             }
         }
 

@@ -26,6 +26,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriver;
 import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriverRR;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -60,6 +61,7 @@ For support, contact tech@gobilda.com
 -Ethan Doak
  */
 
+@Disabled
 @TeleOp(name="goBILDA® PinPoint Odometry Example", group="Linear OpMode")
 //@Disabled
 public class SensorGoBildaPinpointExample extends LinearOpMode {
@@ -117,8 +119,8 @@ public class SensorGoBildaPinpointExample extends LinearOpMode {
         odo.resetPosAndIMU();
 
         telemetry.addData("Status", "Initialized");
-        telemetry.addData("X offset", odo.getXOffset());
-        telemetry.addData("Y offset", odo.getYOffset());
+//        telemetry.addData("X offset", odo.getXOffset());
+//        telemetry.addData("Y offset", odo.getYOffset());
         telemetry.addData("Device Version Number:", odo.getDeviceVersion());
         telemetry.addData("Device SCalar", odo.getYawScalar());
         telemetry.update();

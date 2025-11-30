@@ -1,12 +1,16 @@
 package org.firstinspires.ftc.teamcode.opmode;
 
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriver;
 import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriverRR;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.PinpointDrive;
 import org.firstinspires.ftc.teamcode.RobotConstants;
 import org.firstinspires.ftc.teamcode.vision.AprilTag;
 import org.firstinspires.ftc.teamcode.vision.AprilTagDriver;
@@ -19,13 +23,10 @@ public abstract class MMDriveOpMode extends OpMode {
     /**
      * This is the list of april tag ids that we care about.
      */
-    public static final List<Integer> APRIL_TAG_IDS = Arrays.asList(20, 24);
+    public static final List<Integer> POS_APRIL_TAG_IDS = Arrays.asList(20, 24);
 
     // Drive System
-    protected DcMotor frontLeftDrive = null;
-    protected DcMotor backLeftDrive = null;
-    protected DcMotor frontRightDrive = null;
-    protected DcMotor backRightDrive = null;
+    protected PinpointDrive pinpointDrive;
     protected String driveStatus = "Offline";
 
     // Positioning system
@@ -74,29 +75,10 @@ public abstract class MMDriveOpMode extends OpMode {
         return intakeStatus;
     }
 
+    public abstract Pose2d getInitialPose();
+
     @Override
     public void init() {
-        // Init our drive motors (set 0 power behavior, direction)
-        telemetry.addData("Mecanum: %s", this::getDriveStatus);
-        if (RobotConstants.DRIVE_ENABLED) {
-            frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
-            backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
-            frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
-            backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
-
-            frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
-            backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
-            frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
-            backRightDrive.setDirection(DcMotor.Direction.REVERSE);
-
-            frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-            this.driveStatus = "Initialized";
-        }
-
         // Init our pinpoint driver / dead wheels
         telemetry.addData("Pinpoint: %s", this::getOdoStatus);
         telemetry.addData("Position: %s", this::getOdoPos);
@@ -106,7 +88,7 @@ public abstract class MMDriveOpMode extends OpMode {
             // to the names assigned during the robot configuration step on the DS or RC devices.
             odo = hardwareMap.get(GoBildaPinpointDriverRR.class, "pinpoint");
             // TODO - what are these values?
-            odo.setOffsets(-84.0, -168.0); //these are tuned for 3110-0002-0001 Product Insight #1
+            odo.setOffsets(-84.0, -168.0, DistanceUnit.MM); //these are tuned for 3110-0002-0001 Product Insight #1
             odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD);
             // Set the direction that each of the two odometry pods count. The X (forward) pod should
             // increase when you move the robot forward. And the Y (strafe) pod should increase when
@@ -125,6 +107,13 @@ public abstract class MMDriveOpMode extends OpMode {
             aprilTagDrive.initAprilTag();
 
             this.aprilTagStatus = "Initialized";
+        }
+
+        // Init our drive motors (set 0 power behavior, direction)
+        telemetry.addData("Mecanum: %s", this::getDriveStatus);
+        if (RobotConstants.DRIVE_ENABLED) {
+            this.pinpointDrive = new PinpointDrive(hardwareMap, getInitialPose());
+            this.driveStatus = "Initialized";
         }
 
         // TODO - init color identification
@@ -162,8 +151,27 @@ public abstract class MMDriveOpMode extends OpMode {
     }
 
     @Override
+    public void loop() {
+        // Handle updating the odometry
+        if (RobotConstants.ODO_ENABLED) {
+            odo.update();
+            Pose2d pos = odo.getPositionRR();
+            this.odoStatus = odo.getDeviceStatus().name();
+            this.odoPos = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}",
+                    pos.position.x, pos.position.y, pos.heading.toDouble());
+            PoseVelocity2d vel = odo.getVelocityRR();
+            this.odoVel = String.format(Locale.US,"{XVel: %.3f, YVel: %.3f, HVel: %.3f}", vel.linearVel.x, vel.linearVel.y, vel.angVel);
+        }
+
+    }
+
+    @Override
     public void start() {
         super.start();
+
+        if (RobotConstants.DRIVE_ENABLED) {
+            pinpointDrive.updatePoseEstimate();
+        }
     }
 
     @Override
@@ -172,10 +180,8 @@ public abstract class MMDriveOpMode extends OpMode {
 
         // stop all motors
         if (RobotConstants.DRIVE_ENABLED) {
-            frontLeftDrive.setPower(0);
-            frontRightDrive.setPower(0);
-            backLeftDrive.setPower(0);
-            backRightDrive.setPower(0);
+            this.pinpointDrive.setDrivePowers(new PoseVelocity2d(
+                    new Vector2d(0,0), this.pinpointDrive.pinpoint.getHeadingVelocity()));
             this.driveStatus = "Stopped";
         }
         if (RobotConstants.INTAKE_ENABLED) {
@@ -186,7 +192,6 @@ public abstract class MMDriveOpMode extends OpMode {
             outtakeDrive.setPower(0);
             this.outtakeStatus = "Stopped";
         }
-        // TODO - any final telemetry
     }
 
     /**
@@ -198,7 +203,7 @@ public abstract class MMDriveOpMode extends OpMode {
     public Double autoAim(final List<AprilTag> aprilTags) {
         //returns -1 for left turns, 0 for on target & 1 for right turns, null for no apriltag
         Optional<AprilTag> optionalAprilTag = aprilTags.stream()
-                .filter(aprilTag -> APRIL_TAG_IDS.contains(aprilTag.getId()))
+                .filter(aprilTag -> POS_APRIL_TAG_IDS.contains(aprilTag.getId()))
                 .findFirst();
 
         // set our default power

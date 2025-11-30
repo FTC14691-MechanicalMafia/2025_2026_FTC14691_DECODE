@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.opmode;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.RobotConstants;
 import org.firstinspires.ftc.teamcode.vision.AprilTag;
@@ -16,16 +16,15 @@ import java.util.stream.Collectors;
 @TeleOp(name = "TeleOp Mode", group = "Competition")
 public class TeleOpMode extends MMDriveOpMode {
 
+    @Override
+    public Pose2d getInitialPose() {
+        // Return 0s since we don't care about our position in TeleOp.
+        return new Pose2d(new Vector2d(0, 0), 0);
+    }
+
     public void loop() {
-        if (RobotConstants.ODO_ENABLED) {
-            odo.update();
-            Pose2d pos = odo.getPositionRR();
-            this.odoStatus = odo.getDeviceStatus().name();
-            this.odoPos = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}",
-                    pos.position.x, pos.position.y, pos.heading.toDouble());
-            PoseVelocity2d vel = odo.getVelocityRR();
-            this.odoVel = String.format(Locale.US,"{XVel: %.3f, YVel: %.3f, HVel: %.3f}", vel.linearVel.x, vel.linearVel.y, vel.angVel);
-        }
+        // Do the stuff our parent class set up
+        super.loop();
 
         // Controller 1
         // implement left stick for mechanic forward/strafe
@@ -61,31 +60,28 @@ public class TeleOpMode extends MMDriveOpMode {
 
             // TODO - recalibrate the IMU to the position based on the april tag.
         }
-        this.driveStatus = String.format("ax: %d, lat: %d, yaw: %d", axial, lateral, yaw);
 
         //to create adjustment curve, use Math.pow(2, gamepad#.stick - 1);
         //if yaw = 0, give the all clear to shoot
-        double multiplier;
+        double multiplier = 0.75;
+        String speed = "norm";
         if (gamepad1.left_trigger < 0) {
             //  LT for slow
             multiplier = 0.5;
+            speed = "slow";
         } else if (gamepad1.right_trigger < 0) {
             //  RT for boost
             multiplier = 1;
-        } else {
-            multiplier = 0.75;
+            speed = "boost";
         }
-        double frontLeftPower = (axial + lateral + yaw) * multiplier;
-        double frontRightPower = (axial - lateral - yaw) * multiplier;
-        double backLeftPower = (axial - lateral + yaw) * multiplier;
-        double backRightPower = (axial + lateral - yaw) * multiplier;
+        this.driveStatus = String.format(Locale.US, "ax: %.3f, lat: %.3f, yaw: %.3f, spd: %s", axial, lateral, yaw, speed);
 
         // set the drive power
         if (RobotConstants.DRIVE_ENABLED) {
-            frontLeftDrive.setPower(frontLeftPower);
-            frontRightDrive.setPower(frontRightPower);
-            backLeftDrive.setPower(backLeftPower);
-            backRightDrive.setPower(backRightPower);
+            PoseVelocity2d drivePose = new PoseVelocity2d(
+                    new Vector2d(axial * multiplier, lateral * multiplier),
+                    yaw * multiplier);
+            pinpointDrive.setDrivePowers(drivePose);
         }
 
         // Controller 2

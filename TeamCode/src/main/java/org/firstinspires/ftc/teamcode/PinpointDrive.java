@@ -144,6 +144,9 @@ public class PinpointDrive extends MecanumDrive {
         return pinpoint.getVelocityRR();
     }
 
+    public void setPinpointPosition(Pose2d newPosition) {
+        pinpoint.setPosition(newPosition);
+    }
 
     // for debug logging
     public static final class FTCPoseMessage {

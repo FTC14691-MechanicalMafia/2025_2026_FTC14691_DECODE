@@ -22,8 +22,8 @@ public class RobotConstants {
      * Note: This will also be the base position that other positions are calculated off of
      */
     public static double OUTTAKE_AIM_INIT_POS = 0;
-    public static double OUTTAKE_AIM_MIN_POS = 0;
-    public static double OUTTAKE_AIM_MAX_POS = 0.1;
+//    public static double OUTTAKE_AIM_MIN_POS = 0;
+//    public static double OUTTAKE_AIM_MAX_POS = 0.1;
     public static double OUTAKE_SHOOT_LAUNCH_POS = .5;
     public static double OUTTAKE_SHOOT_REST_POS = 0;
 
@@ -33,6 +33,11 @@ public class RobotConstants {
      * initialized and intake is unavailable.
      */
     public static Boolean DRIVE_ENABLED = true;
+
+    /**
+     * Is odometry enabled?
+     */
+    public static Boolean ODO_ENABLED = true;
 
     /**
      * When true, the camera is expected to be present on the robot.  If false, the camera will not be

@@ -11,7 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@TeleOp
+@TeleOp(name="April Tag Debug", group="Debugging")
 public class AprilTagOpMode extends OpMode {
     /**
      * This is the list of april tag ids that we care about.

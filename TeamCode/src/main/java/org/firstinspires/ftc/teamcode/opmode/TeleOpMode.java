@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode;
 
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -8,12 +10,23 @@ import org.firstinspires.ftc.teamcode.vision.AprilTag;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @TeleOp(name = "TeleOp Mode", group = "Competition")
 public class TeleOpMode extends MMDriveOpMode {
 
     public void loop() {
+        if (RobotConstants.ODO_ENABLED) {
+            odo.update();
+            Pose2d pos = odo.getPositionRR();
+            this.odoStatus = odo.getDeviceStatus().name();
+            this.odoPos = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}",
+                    pos.position.x, pos.position.y, pos.heading.toDouble());
+            PoseVelocity2d vel = odo.getVelocityRR();
+            this.odoVel = String.format(Locale.US,"{XVel: %.3f, YVel: %.3f, HVel: %.3f}", vel.linearVel.x, vel.linearVel.y, vel.angVel);
+        }
+
         // Controller 1
         // implement left stick for mechanic forward/strafe
         double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
@@ -45,6 +58,8 @@ public class TeleOpMode extends MMDriveOpMode {
             if (gamepad2.x && Math.abs(autoAimPower) > 0) { // check if autoaim is pushed and we have something to aim at
                 yaw = autoAimPower;
             }
+
+            // TODO - recalibrate the IMU to the position based on the april tag.
         }
         this.driveStatus = String.format("ax: %d, lat: %d, yaw: %d", axial, lateral, yaw);
 

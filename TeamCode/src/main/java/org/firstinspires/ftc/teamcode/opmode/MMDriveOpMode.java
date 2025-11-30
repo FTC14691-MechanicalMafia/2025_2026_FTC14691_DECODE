@@ -31,6 +31,8 @@ public abstract class MMDriveOpMode extends OpMode {
     // Positioning system
     protected GoBildaPinpointDriverRR odo; // Declare OpMode member for the Odometry Computer
     protected String odoStatus = "Offline";
+    protected String odoPos = "None";
+    protected String odoVel = "None";
 
     // Intake System
     protected DcMotor intakeDrive = null;
@@ -50,6 +52,14 @@ public abstract class MMDriveOpMode extends OpMode {
 
     public String getOdoStatus() {
         return odoStatus;
+    }
+
+    public String getOdoPos() {
+        return odoPos;
+    }
+
+    public String getOdoVel() {
+        return odoVel;
     }
 
     public String getAprilTagStatus() {
@@ -89,6 +99,8 @@ public abstract class MMDriveOpMode extends OpMode {
 
         // Init our pinpoint driver / dead wheels
         telemetry.addData("Pinpoint: %s", this::getOdoStatus);
+        telemetry.addData("Position: %s", this::getOdoPos);
+        telemetry.addData("Velocity: %s", this::getOdoVel);
         if (RobotConstants.ODO_ENABLED) {
             // Initialize the hardware variables. Note that the strings used here must correspond
             // to the names assigned during the robot configuration step on the DS or RC devices.
@@ -103,7 +115,7 @@ public abstract class MMDriveOpMode extends OpMode {
             odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
             // Before running the robot, recalibrate the IMU. This needs to happen when the robot is stationary
             odo.resetPosAndIMU();
-            this.odoStatus = "Initialized";
+            this.odoStatus = odo.getDeviceStatus().name();
         }
 
         // April tag stuff (camera)

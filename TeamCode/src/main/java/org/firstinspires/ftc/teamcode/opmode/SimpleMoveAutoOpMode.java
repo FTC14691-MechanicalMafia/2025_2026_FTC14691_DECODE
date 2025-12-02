@@ -22,7 +22,7 @@ public class SimpleMoveAutoOpMode extends RRAutoOpMode {
         super.start();
 
         // Get our trajectory builder to add actions to
-        TrajectoryActionBuilder builder = pinpointDrive.actionBuilder(getInitialPose());
+        TrajectoryActionBuilder builder = mecanumDrive.actionBuilder(getInitialPose());
 
         // Create our sequence of things that we want to do
         runningActions.add(

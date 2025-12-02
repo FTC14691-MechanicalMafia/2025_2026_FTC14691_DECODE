@@ -27,7 +27,7 @@ public abstract class MMDriveOpMode extends OpMode {
     public static final List<Integer> POS_APRIL_TAG_IDS = Arrays.asList(20, 24);
 
     // Drive System
-    protected MecanumDrive pinpointDrive;
+    protected MecanumDrive mecanumDrive;
     protected String driveStatus = "Offline";
 
     // Positioning system
@@ -113,8 +113,8 @@ public abstract class MMDriveOpMode extends OpMode {
         // Init our drive motors (set 0 power behavior, direction)
         telemetry.addData("Mecanum: %s", this::getDriveStatus);
         if (RobotConstants.DRIVE_ENABLED) {
-            this.pinpointDrive = new MecanumDrive(hardwareMap, getInitialPose());
-//            this.pinpointDrive = new PinpointDrive(hardwareMap, getInitialPose());
+            //initialize either the pinpoint drive, or the mechanum drive depending on the ODO config
+            this.mecanumDrive = RobotConstants.ODO_ENABLED ? new PinpointDrive(hardwareMap, getInitialPose()) : new MecanumDrive(hardwareMap, getInitialPose());
             this.driveStatus = "Initialized";
         }
 
@@ -144,7 +144,6 @@ public abstract class MMDriveOpMode extends OpMode {
         }
 
         // TODO - init distance sensors
-        telemetry.addData("Distance: %s", "Offline");
 
         // TODO - init indicator light; Note - no telemetry needed since this is its own status
 
@@ -172,7 +171,7 @@ public abstract class MMDriveOpMode extends OpMode {
         super.start();
 
         if (RobotConstants.DRIVE_ENABLED) {
-            pinpointDrive.updatePoseEstimate();
+            mecanumDrive.updatePoseEstimate();
         }
     }
 
@@ -182,9 +181,8 @@ public abstract class MMDriveOpMode extends OpMode {
 
         // stop all motors
         if (RobotConstants.DRIVE_ENABLED) {
-            //TODO
-//            this.pinpointDrive.setDrivePowers(new PoseVelocity2d(
-//                    new Vector2d(0,0), this.pinpointDrive.pinpoint.getHeadingVelocity()));
+            this.mecanumDrive.setDrivePowers(new PoseVelocity2d(
+                    new Vector2d(0,0), this.mecanumDrive.updatePoseEstimate().angVel));
             this.driveStatus = "Stopped";
         }
         if (RobotConstants.INTAKE_ENABLED) {

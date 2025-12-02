@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.Pose2d;
 
 import org.firstinspires.ftc.teamcode.RobotConstants;
 import org.firstinspires.ftc.teamcode.vision.AprilTag;
@@ -73,7 +72,7 @@ public abstract class RRAutoOpMode extends MMDriveOpMode {
         }
 
         // update the pose estimate on the drive since we actually care about our position info
-        pinpointDrive.updatePoseEstimate();
+        mecanumDrive.updatePoseEstimate();
 
         // Update the actions we care about
         updateRunningActions(packet);

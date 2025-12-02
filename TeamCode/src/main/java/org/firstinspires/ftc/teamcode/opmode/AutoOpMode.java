@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode;
 
+import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
@@ -8,7 +9,7 @@ import org.firstinspires.ftc.teamcode.vision.AprilTagDriver;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import java.util.List;
 
-public abstract class AutoOpMode extends MMDriveOpMode {
+public class AutoOpMode extends MMDriveOpMode {
     double DRIVE_RATE = 1.0/2;
     double STRAFE_RATE = 1.0/2;
     double TURN_RATE = 1.0/3;
@@ -37,6 +38,12 @@ public abstract class AutoOpMode extends MMDriveOpMode {
     private static int DESIRED_TAG_ID = -1;     // Choose the tag you want to approach or set to -1 for ANY tag.
     //make it possible to change DESIRED_TAG_ID to reflect which team we are on
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
+
+    @Override
+    public Pose2d getInitialPose() {
+        return new Pose2d(0, 0, Math.toRadians(0));
+    }
+
     public void init(){
         //determine team of robot based on AprilTags it sees
         /*if(aprilTag.detectAprilTags() == 20){

@@ -31,10 +31,10 @@ public class TeleOpMode extends MMDriveOpMode {
         double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
 
         //finds whether direction is pos or neg then multiplies by the adjusted value
-        double lateral = (gamepad1.left_stick_x);
+        double lateral = -gamepad1.left_stick_x;
 
-        // implement right stick for rotation
-        double autoAimPower = 0;
+        // implement right stick for rotation and the auto aiming features
+        double yaw = -gamepad1.right_stick_x;
         if (RobotConstants.CAMERA_ENABLED) {
             // Get any april tags that are visible this loop
             List<AprilTag> tags = aprilTagDrive.detectAprilTags();
@@ -45,14 +45,11 @@ public class TeleOpMode extends MMDriveOpMode {
                     .map(aprilTag -> String.valueOf(aprilTag.getId()))
                     // join the ids together separated by a comma
                     .collect(Collectors.joining(","));
-            autoAimPower = autoAim(tags);
-        }
-        double yaw = (gamepad1.right_stick_x);
-        if (RobotConstants.CAMERA_ENABLED) {
+            double autoAimPower = autoAim(tags);
+
+            // this is to prevent oscillating back and forth due to overshoot (I think?)
             if (yaw != 0) {
                 yaw = (yaw / Math.abs(yaw)) * Math.pow(Math.abs(yaw), 2);
-            } else {
-                yaw = 0;
             }
             if (gamepad2.x && Math.abs(autoAimPower) > 0) { // check if autoaim is pushed and we have something to aim at
                 yaw = autoAimPower;
@@ -63,25 +60,27 @@ public class TeleOpMode extends MMDriveOpMode {
 
         //to create adjustment curve, use Math.pow(2, gamepad#.stick - 1);
         //if yaw = 0, give the all clear to shoot
-        double multiplier = 0.75;
+        double driverMultiplier = 0.75;
         String speed = "norm";
         if (gamepad1.left_trigger < 0) {
             //  LT for slow
-            multiplier = 0.5;
+            driverMultiplier = 0.5;
             speed = "slow";
         } else if (gamepad1.right_trigger < 0) {
             //  RT for boost
-            multiplier = 1;
+            driverMultiplier = 1;
             speed = "boost";
         }
-        this.driveStatus = String.format(Locale.US, "ax: %.3f, lat: %.3f, yaw: %.3f, spd: %s", axial, lateral, yaw, speed);
 
         // set the drive power
         if (RobotConstants.DRIVE_ENABLED) {
+            this.driveStatus = String.format(Locale.US, "ax: %.3f, lat: %.3f, yaw: %.3f, spd: %s", axial, lateral, yaw, speed);
+
             PoseVelocity2d drivePose = new PoseVelocity2d(
-                    new Vector2d(axial * multiplier, lateral * multiplier),
-                    yaw * multiplier);
-            pinpointDrive.setDrivePowers(drivePose);
+                    new Vector2d(axial * driverMultiplier, lateral * driverMultiplier),
+                    yaw * driverMultiplier);
+
+            mecanumDrive.setDrivePowers(drivePose);
         }
 
         // Controller 2

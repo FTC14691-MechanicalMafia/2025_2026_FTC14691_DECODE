@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.PinpointDrive;
 import org.firstinspires.ftc.teamcode.RobotConstants;
 import org.firstinspires.ftc.teamcode.vision.AprilTag;
@@ -26,7 +27,7 @@ public abstract class MMDriveOpMode extends OpMode {
     public static final List<Integer> POS_APRIL_TAG_IDS = Arrays.asList(20, 24);
 
     // Drive System
-    protected PinpointDrive pinpointDrive;
+    protected MecanumDrive pinpointDrive;
     protected String driveStatus = "Offline";
 
     // Positioning system
@@ -112,7 +113,8 @@ public abstract class MMDriveOpMode extends OpMode {
         // Init our drive motors (set 0 power behavior, direction)
         telemetry.addData("Mecanum: %s", this::getDriveStatus);
         if (RobotConstants.DRIVE_ENABLED) {
-            this.pinpointDrive = new PinpointDrive(hardwareMap, getInitialPose());
+            this.pinpointDrive = new MecanumDrive(hardwareMap, getInitialPose());
+//            this.pinpointDrive = new PinpointDrive(hardwareMap, getInitialPose());
             this.driveStatus = "Initialized";
         }
 
@@ -180,8 +182,9 @@ public abstract class MMDriveOpMode extends OpMode {
 
         // stop all motors
         if (RobotConstants.DRIVE_ENABLED) {
-            this.pinpointDrive.setDrivePowers(new PoseVelocity2d(
-                    new Vector2d(0,0), this.pinpointDrive.pinpoint.getHeadingVelocity()));
+            //TODO
+//            this.pinpointDrive.setDrivePowers(new PoseVelocity2d(
+//                    new Vector2d(0,0), this.pinpointDrive.pinpoint.getHeadingVelocity()));
             this.driveStatus = "Stopped";
         }
         if (RobotConstants.INTAKE_ENABLED) {

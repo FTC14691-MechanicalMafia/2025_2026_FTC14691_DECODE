@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.vision.AprilTagDriver;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import java.util.List;
 
-public class AutoOpMode extends MMDriveOpMode {
+public abstract class AutoOpMode extends MMDriveOpMode {
     double DRIVE_RATE = 1.0/2;
     double STRAFE_RATE = 1.0/2;
     double TURN_RATE = 1.0/3;

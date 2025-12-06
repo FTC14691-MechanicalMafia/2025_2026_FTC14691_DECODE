@@ -140,6 +140,9 @@ public abstract class MMDriveOpMode extends OpMode {
             aimServo = hardwareMap.get(Servo.class, "outtake_aim");
             aimServo.setPosition(RobotConstants.OUTTAKE_AIM_INIT_POS);
 
+            shootServo = hardwareMap.get(Servo.class, "shoot_servo");
+            shootServo.setPosition(RobotConstants.OUTTAKE_SHOOT_REST_POS);
+
             this.outtakeStatus = "Initialized";
         }
 

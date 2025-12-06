@@ -31,7 +31,7 @@ public class TeleOpMode extends MMDriveOpMode {
         double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
 
         //finds whether direction is pos or neg then multiplies by the adjusted value
-        double lateral = -gamepad1.left_stick_x;
+        double lateral = gamepad1.left_stick_x;
 
         // implement right stick for rotation and the auto aiming features
         double yaw = -gamepad1.right_stick_x;
@@ -66,7 +66,8 @@ public class TeleOpMode extends MMDriveOpMode {
             //  LT for slow
             driverMultiplier = 0.5;
             speed = "slow";
-        } else if (gamepad1.right_trigger > 0) {
+        }
+        if (gamepad1.right_trigger > 0) {
             //  RT for boost
             driverMultiplier = 1;
             speed = "boost";
@@ -74,11 +75,11 @@ public class TeleOpMode extends MMDriveOpMode {
 
         // set the drive power
         if (RobotConstants.DRIVE_ENABLED) {
-            this.driveStatus = String.format(Locale.US, "ax: %.3f, lat: %.3f, yaw: %.3f, spd: %s", axial, lateral, yaw, speed);
-
+            this.driveStatus = String.format(Locale.US, "ax: %.3f, lat: %.3f, yaw: %.3f, spd: %s, mult: %f", axial, lateral, yaw, speed, driverMultiplier);
             PoseVelocity2d drivePose = new PoseVelocity2d(
-                    new Vector2d(axial * driverMultiplier, lateral * driverMultiplier),
-                    yaw * driverMultiplier);
+                    new Vector2d(-gamepad1.left_stick_y * driverMultiplier,
+                            -gamepad1.left_stick_x * driverMultiplier),
+                    -gamepad1.right_stick_x * driverMultiplier);
 
             mecanumDrive.setDrivePowers(drivePose);
         }
@@ -117,7 +118,7 @@ public class TeleOpMode extends MMDriveOpMode {
                 shootServo.setPosition(RobotConstants.OUTTAKE_SHOOT_REST_POS);
             }
 
-            this.outtakeStatus = String.format("Pow: %d, Aim: %d, Shoot: %d",
+            this.outtakeStatus = String.format("Pow: %.3f, Aim: %.3f, Shoot: %.3f",
                     outtakeDrive.getPower(), aimServo.getPosition(), shootServo.getPosition());
         }
 

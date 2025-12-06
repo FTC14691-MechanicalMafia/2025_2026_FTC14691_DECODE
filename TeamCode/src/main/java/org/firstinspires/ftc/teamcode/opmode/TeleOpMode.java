@@ -62,11 +62,11 @@ public class TeleOpMode extends MMDriveOpMode {
         //if yaw = 0, give the all clear to shoot
         double driverMultiplier = 0.75;
         String speed = "norm";
-        if (gamepad1.left_trigger < 0) {
+        if (gamepad1.left_trigger > 0) {
             //  LT for slow
             driverMultiplier = 0.5;
             speed = "slow";
-        } else if (gamepad1.right_trigger < 0) {
+        } else if (gamepad1.right_trigger > 0) {
             //  RT for boost
             driverMultiplier = 1;
             speed = "boost";

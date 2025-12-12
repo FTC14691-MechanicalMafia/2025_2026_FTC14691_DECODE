@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @TeleOp(name = "TeleOp Mode", group = "Competition")
 public class TeleOpMode extends MMDriveOpMode {
-
+    double outtakePower = 0.0;
     @Override
     public Pose2d getInitialPose() {
         // Return 0s since we don't care about our position in TeleOp.
@@ -28,13 +28,13 @@ public class TeleOpMode extends MMDriveOpMode {
 
         // Controller 1
         // implement left stick for mechanic forward/strafe
-        double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
+        double axial = gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
 
         //finds whether direction is pos or neg then multiplies by the adjusted value
         double lateral = gamepad1.left_stick_x;
 
         // implement right stick for rotation and the auto aiming features
-        double yaw = -gamepad1.right_stick_x;
+        double yaw = gamepad1.right_stick_x;
         if (RobotConstants.CAMERA_ENABLED) {
             // Get any april tags that are visible this loop
             List<AprilTag> tags = aprilTagDrive.detectAprilTags();
@@ -77,9 +77,9 @@ public class TeleOpMode extends MMDriveOpMode {
         if (RobotConstants.DRIVE_ENABLED) {
             this.driveStatus = String.format(Locale.US, "ax: %.3f, lat: %.3f, yaw: %.3f, spd: %s, mult: %f", axial, lateral, yaw, speed, driverMultiplier);
             PoseVelocity2d drivePose = new PoseVelocity2d(
-                    new Vector2d(-gamepad1.left_stick_y * driverMultiplier,
-                            -gamepad1.left_stick_x * driverMultiplier),
-                    -gamepad1.right_stick_x * driverMultiplier);
+                    new Vector2d(axial * driverMultiplier,
+                            lateral * driverMultiplier),
+                    yaw * driverMultiplier);
 
             mecanumDrive.setDrivePowers(drivePose);
         }
@@ -96,19 +96,24 @@ public class TeleOpMode extends MMDriveOpMode {
         // right trigger for outtake on/off
         if (RobotConstants.OUTTAKE_ENABLED) {
             // Dpad left (slower) right (faster) outtake motor speed
-            if (gamepad2.dpad_left) {
-                outtakeDrive.setPower(outtakeDrive.getPower() - .1);
-            }
-            if (gamepad2.dpad_right) {
-                outtakeDrive.setPower(outtakeDrive.getPower() + .1);
-            }
+            if (gamepad2.dpad_up) outtakePower = 0.0;
+            if (gamepad2.dpad_down) outtakePower = 0.0;
+            if (gamepad2.dpad_left) outtakePower -= 0.1;
+            if (gamepad2.dpad_right) outtakePower += 0.1;
+            outtakeDrive.setPower(outtakePower);
+
             //  right stick up/down aiming for distance angle (hood angle) - servo
             if (gamepad2.right_stick_y != 0) {
                 // if the stick is at -1 (bottom) assume that is the start position
                 // if the stick is at 1 (top) assume that it should be at the max position
                 // using exponential regression
                 // TODO - calculate the exponential regression on init based on the configured variables
-                aimServo.setPosition(0.1869 * Math.pow(5.35521, gamepad2.right_stick_y));
+                //aimServo.setPosition(0.1869 * Math.pow(5.35521, gamepad2.right_stick_y));
+
+                double aimpos = (((gamepad2.right_stick_y + 1) / 2) * 0.2) + 0.1;
+                if (aimpos > .3) aimpos = .3;
+                if (aimpos < .1) aimpos = .1;
+                aimServo.setPosition(aimpos);
             }
 
             //  RT for shoot ball - servo

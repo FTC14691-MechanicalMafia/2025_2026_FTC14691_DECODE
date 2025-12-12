@@ -27,16 +27,10 @@ public class ShootTestOpMode extends MMDriveOpMode {
         super.loop();
         // Controller 1
         // implement left stick for mechanic forward/strafe
-        double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
-        //double axial = gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
-
-        //finds whether direction is pos or neg then multiplies by the adjusted value
-        double lateral = gamepad1.left_stick_x;
-        //double lateral = -gamepad1.left_stick_x;
 
         // implement right stick for rotation and the auto aiming features
-        double yaw = -gamepad1.right_stick_x;
-        //double yaw = gamepad1.right_stick_x;
+        double yaw = gamepad1.right_stick_x;
+
         double distance = 0;
         if (RobotConstants.CAMERA_ENABLED) {
             // Get any april tags that are visible this loop
@@ -88,6 +82,7 @@ public class ShootTestOpMode extends MMDriveOpMode {
             if (gamepad2.dpad_right) {
                 outtakePower += 0.1;
             }
+            outtakeDrive.setPower(outtakePower);
             //  right stick up/down aiming for distance angle (hood angle) - servo
             if (gamepad2.right_stick_y != 0) {
                 // if the stick is at -1 (bottom) assume that is the start position

@@ -68,7 +68,9 @@ public abstract class RRAutoOpMode extends MMDriveOpMode {
                 .findFirst();
         if (optionalAprilTag.isPresent()) {
             //TODO - the calculation to the field position
-//            pinpointDrive.setPinpointPosition();
+            //take apriltag heading & distance to calculate relative location
+            //take the april tags known position on the field and relative location for robot to calculate robots location
+            //pinpointDrive.setPinpointPosition();
         }
 
         // update the pose estimate on the drive since we actually care about our position info

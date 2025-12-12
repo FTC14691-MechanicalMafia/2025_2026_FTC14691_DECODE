@@ -47,6 +47,7 @@ public abstract class MMDriveOpMode extends OpMode {
     protected String outtakeStatus = "Offline";
     protected AprilTagDriver aprilTagDrive = null;
     protected String aprilTagStatus = "Offline";
+    RobotConstants constants = new RobotConstants();
 
     public String getDriveStatus() {
         return driveStatus;
@@ -221,9 +222,24 @@ public abstract class MMDriveOpMode extends OpMode {
             if (Math.abs(angle) > 1) {//2 is the margin of error on either side, can be changed with the circumstances
                 power = angle * Math.abs(angle) * 0.1 / -Math.abs(angle);
             }
+            //TODO - pid loop?
         }
 
         //return whatever power we determined
         return power;
+    }
+    public void fire(AprilTag tag){
+        int ballsLeft = 3;
+        while(ballsLeft > 0) {
+            double neededPower = constants.rangePowers[(int) (2 * tag.getTargetting().getRange() * Math.cos(tag.getTargetting().getElevation()))];
+            outtakeDrive.setPower(neededPower);
+            if(outtakeDrive.getPower() <= neededPower){
+                ballsLeft -= 1;
+            }
+        }
+    }
+    public void intake(int power){
+        intakeDrive.setPower(power);
+
     }
 }

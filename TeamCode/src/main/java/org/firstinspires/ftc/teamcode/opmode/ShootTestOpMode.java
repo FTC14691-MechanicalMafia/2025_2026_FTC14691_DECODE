@@ -78,15 +78,15 @@ public class ShootTestOpMode extends MMDriveOpMode {
             intakeDrive.setPower(intakePower);
             this.intakeStatus = "Pow: " + intakePower;
         }
-
+        double outtakePower = 0.0;
         // right trigger for outtake on/off
         if (RobotConstants.OUTTAKE_ENABLED) {
             // Dpad left (slower) right (faster) outtake motor speed
             if (gamepad2.dpad_left) {
-                outtakeDrive.setPower(outtakeDrive.getPower() - .1);
+                outtakePower -= 0.1;
             }
             if (gamepad2.dpad_right) {
-                outtakeDrive.setPower(outtakeDrive.getPower() + .1);
+                outtakePower += 0.1;
             }
             //  right stick up/down aiming for distance angle (hood angle) - servo
             if (gamepad2.right_stick_y != 0) {

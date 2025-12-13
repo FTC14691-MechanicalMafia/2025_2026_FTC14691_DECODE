@@ -106,13 +106,13 @@ public class ShootTestOpMode extends MMDriveOpMode {
 
             //  RT for shoot ball - servo
             if (gamepad2.right_trigger > 0) {
-                shootServo.setPosition(RobotConstants.OUTAKE_SHOOT_LAUNCH_POS);
+                shootServo.setPower(RobotConstants.OUTAKE_SHOOT_LAUNCH_POS);
             } else {
-                shootServo.setPosition(RobotConstants.OUTTAKE_SHOOT_REST_POS);
+                shootServo.setPower(RobotConstants.OUTTAKE_SHOOT_REST_POS);
             }
 
             this.outtakeStatus = String.format("Pow: %.3f, Aim: %.3f, Shoot: %.3f",
-                    outtakeDrive.getPower(), aimServo.getPosition(), shootServo.getPosition());
+                    outtakeDrive.getPower(), aimServo.getPosition(), shootServo.getPower());
         }
         // update telemetry
         telemetry.update();

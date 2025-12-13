@@ -8,6 +8,8 @@ import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriverRR;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
+
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
@@ -43,7 +45,7 @@ public abstract class MMDriveOpMode extends OpMode {
     // Outtake System
     protected DcMotor outtakeDrive = null;
     protected Servo aimServo = null;
-    protected Servo shootServo = null;
+    protected CRServo shootServo = null;
     protected String outtakeStatus = "Offline";
     protected AprilTagDriver aprilTagDrive = null;
     protected String aprilTagStatus = "Offline";

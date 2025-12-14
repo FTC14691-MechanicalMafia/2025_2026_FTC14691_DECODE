@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.opmode.AprilTagOpMode;
 import org.firstinspires.ftc.teamcode.vision.AprilTag;
 import org.firstinspires.ftc.teamcode.vision.AprilTagDriver;
 
+import java.lang.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +37,7 @@ public class StartFromBackAutoOpMode extends RRAutoOpMode {
     }
 
     @Override
-    public void start() {
+    public void start(){
         Optional<AprilTag> tags = aprilDriver.detectAprilTags().stream()
                 .filter(aprilTag -> POS_APRIL_TAG_IDS.contains(aprilTag.getId()))
                 .findFirst();
@@ -69,46 +70,25 @@ public class StartFromBackAutoOpMode extends RRAutoOpMode {
             placesCoords[12] = 2.75;
             placesCoords[13] = -3.25;
         }
-        int lap = 0;
-        while (time <= 20) {
-
-            super.start();
+        super.start();
 
             // Get our trajectory builder to add actions to
             // Create our sequence of things that we want to do
-            super.fire(tags.get());
-            if (lap % 3 == 0) {
-                runningActions.add(
-                        new SequentialAction(
-                                autoActionName("MoveToNewAmmo"),
-                                builder.splineTo(new Vector2d(placesCoords[4 - lap / 3], placesCoords[5 - lap / 3]), 90).build()
 
-                        )
-                );
-            }
-            if (lap % 3 == 1) {
-                super.intake(1);
-                runningActions.add(
-                        new SequentialAction(
-                                builder.lineToX(placesCoords[8 - lap / 3]).build(),
-                                autoActionName("NewAmmoAcquired")
-                        )
-                );
-                super.intake(0);
-            }
-            if (lap % 3 == 2){
-                runningActions.add(
-                        new SequentialAction(
-                                builder.splineTo(new Vector2d(placesCoords[9], placesCoords[10]), placesCoords[11]).build(),
-                                autoActionName("TargetAcquired")
-                        )
-                );
-                super.fire(tags.get());
-            }
-            lap++;
-        }
+        super.fire(tags.get());
         runningActions.add(
                 new SequentialAction(
+                        autoActionName("MoveToNewAmmo"),
+                        builder.splineTo(new Vector2d(placesCoords[4], placesCoords[5]), 90).build(),
+                        intakeDrive.setPower(1),
+                        builder.lineToX(placesCoords[8]).build(),
+                        autoActionName("NewAmmoAcquired"),
+                        intakeDrive.setPower(0),
+                        builder.splineTo(new Vector2d(placesCoords[9], placesCoords[10]), placesCoords[11]).build(),
+                        autoActionName("TargetAcquired"),
+                        outtakeDrive.setPower(1),
+
+                        outtakeDrive.setPower(0),
                         builder.splineTo(new Vector2d(placesCoords[12], placesCoords[13]), 0).build(),
                         autoActionName("ReadyToEnd")
                 )

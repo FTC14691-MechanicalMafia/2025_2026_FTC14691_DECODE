@@ -137,14 +137,14 @@ public abstract class MMDriveOpMode extends OpMode {
         telemetry.addData("Outtake: %s", this::getOuttakeStatus);
         if (RobotConstants.OUTTAKE_ENABLED) {
             outtakeDrive = hardwareMap.get(DcMotor.class, "outtake_drive");
-            outtakeDrive.setDirection(DcMotor.Direction.FORWARD);
+            outtakeDrive.setDirection(DcMotor.Direction.REVERSE);
             outtakeDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
             aimServo = hardwareMap.get(Servo.class, "outtake_aim");
             aimServo.setPosition(RobotConstants.OUTTAKE_AIM_INIT_POS);
 
-            shootServo = hardwareMap.get(Servo.class, "shoot_servo");
-            shootServo.setPosition(RobotConstants.OUTTAKE_SHOOT_REST_POS);
+            shootServo = hardwareMap.get(CRServo.class, "shoot_servo");
+            shootServo.setPower(RobotConstants.OUTTAKE_SHOOT_REST_POS);
 
             this.outtakeStatus = "Initialized";
         }

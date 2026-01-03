@@ -108,9 +108,13 @@ public class StartFromBackAutoOpMode extends RRAutoOpMode {
             lap++;
         }
         runningActions.add(
-                new SequentialAction(
+                /*new SequentialAction(
                         builder.splineTo(new Vector2d(placesCoords[12], placesCoords[13]), 0).build(),
                         autoActionName("ReadyToEnd")
+                )
+                new SequentialAction(
+                        autoActionName("Move off start"),
+                        builder.lineToX(10).build()
                 )
         );*/
         runningActions.add(

@@ -58,7 +58,9 @@ public class RobotConstants {
     public double[] LargeLaunchZoneBoundingCoords = {-6.0, 6.0, 0.0, 0.0, 6.0, 6.0}; //x1, y1, x2, y2, x3, y3
     public double[] SmallLaunchZoneBoundingCoords = {-2.0, -6.0, 0.0, -4.0, 2.0, -6.0}; //x1, y1, x2, y2, x3, y3
     //any robot at y<0 is closer to small launch zone, y>=0 is closer to large launch zone
-    public double[] rangePowers = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-    //power needed for given distance, e.g. index0 -> power for 0.5 ft away
+    public double[] rangePowers = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+    //power needed for given distance, e.g. index 0 -> power for 0.5 ft away
+    public double[] rangeAngles = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+    public int distanceLimit = 12;
     public String team = "blue";
 }

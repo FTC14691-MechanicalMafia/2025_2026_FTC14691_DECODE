@@ -232,13 +232,15 @@ public abstract class MMDriveOpMode extends OpMode {
     }
     public void fire(AprilTag tag){
         int ballsLeft = 3;
+        int range = (int) (tag.getTargetting().getRange() * Math.cos(tag.getTargetting().getElevation()));
         while(ballsLeft > 0) {
-            double neededPower = constants.rangePowers[(int) (2 * tag.getTargetting().getRange() * Math.cos(tag.getTargetting().getElevation()))];
+            double neededPower = constants.rangePowers[range * 2];
             outtakeDrive.setPower(neededPower);
             if(outtakeDrive.getPower() <= neededPower){
                 ballsLeft -= 1;
             }
         }
+        aimServo.setPosition(constants.rangeAngles[range * 2]);
     }
     public void intake(int power){
         intakeDrive.setPower(power);

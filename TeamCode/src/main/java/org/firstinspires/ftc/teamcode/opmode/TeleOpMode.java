@@ -110,7 +110,10 @@ public class TeleOpMode extends MMDriveOpMode {
                 // TODO - calculate the exponential regression on init based on the configured variables
                 //aimServo.setPosition(0.1869 * Math.pow(5.35521, gamepad2.right_stick_y));
 
-                double aimpos = (((gamepad2.right_stick_y + 1) / 2) * 0.2) + 0.1;
+                double aimpos = gamepad2.right_stick_y;
+                aimpos = aimpos + 1;
+                aimpos = aimpos / 2;
+                aimpos = (aimpos * .2) + .1 ;
                 if (aimpos > .3) aimpos = .3;
                 if (aimpos < .1) aimpos = .1;
                 aimServo.setPosition(aimpos);

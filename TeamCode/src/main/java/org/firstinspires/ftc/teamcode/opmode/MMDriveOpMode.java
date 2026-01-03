@@ -8,7 +8,6 @@ import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriverRR;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.CRServo;
 
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -45,7 +44,7 @@ public abstract class MMDriveOpMode extends OpMode {
     // Outtake System
     protected DcMotor outtakeDrive = null;
     protected Servo aimServo = null;
-    protected CRServo shootServo = null;
+    protected Servo kicker = null;
     protected String outtakeStatus = "Offline";
     protected AprilTagDriver aprilTagDrive = null;
     protected String aprilTagStatus = "Offline";
@@ -143,8 +142,8 @@ public abstract class MMDriveOpMode extends OpMode {
             aimServo = hardwareMap.get(Servo.class, "outtake_aim");
             aimServo.setPosition(RobotConstants.OUTTAKE_AIM_INIT_POS);
 
-            shootServo = hardwareMap.get(CRServo.class, "shoot_servo");
-            shootServo.setPower(RobotConstants.OUTTAKE_SHOOT_REST_POS);
+            kicker = hardwareMap.get(Servo.class, "shoot_servo");
+            kicker.setPosition(RobotConstants.OUTTAKE_SHOOT_REST_POS);
 
             this.outtakeStatus = "Initialized";
         }

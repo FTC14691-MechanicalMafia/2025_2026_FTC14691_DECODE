@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode;
 
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -10,7 +9,6 @@ import org.firstinspires.ftc.teamcode.vision.AprilTag;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @TeleOp(name = "ShootTest Mode", group = "Competition")
@@ -97,13 +95,13 @@ public class ShootTestOpMode extends MMDriveOpMode {
 
             //  RT for shoot ball - servo
             if (gamepad2.right_trigger > 0) {
-                shootServo.setPower(RobotConstants.OUTAKE_SHOOT_LAUNCH_POS);
+                kicker.setPosition(RobotConstants.OUTAKE_SHOOT_LAUNCH_POS);
             } else {
-                shootServo.setPower(RobotConstants.OUTTAKE_SHOOT_REST_POS);
+                kicker.setPosition(RobotConstants.OUTTAKE_SHOOT_REST_POS);
             }
 
             this.outtakeStatus = String.format("Pow: %.3f, Aim: %.3f, Shoot: %.3f",
-                    outtakeDrive.getPower(), aimServo.getPosition(), shootServo.getPower());
+                    outtakeDrive.getPower(), aimServo.getPosition(), kicker.getPosition());
         }
         // update telemetry
         telemetry.update();

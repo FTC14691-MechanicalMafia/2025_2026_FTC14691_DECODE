@@ -4,7 +4,10 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
+import org.firstinspires.ftc.teamcode.actions.ShooterActions;
 
 @Autonomous(name="Simple Move")
 public class SimpleMoveAutoOpMode extends RRAutoOpMode {
@@ -24,12 +27,20 @@ public class SimpleMoveAutoOpMode extends RRAutoOpMode {
         // Get our trajectory builder to add actions to
         TrajectoryActionBuilder builder = mecanumDrive.actionBuilder(getInitialPose());
 
+        ShooterActions shooterActions = new ShooterActions(outtakeDrive, kicker);
+
         // Create our sequence of things that we want to do
         runningActions.add(
                 new SequentialAction(
-                        autoActionName("Simple Move"),
-                        builder.lineToX(10).build(),
-                        autoActionName("Complete")
+                        autoActionName("Turnon"),
+                        shooterActions.setShooterPower(0.8),
+                        autoActionName("Kick"),
+                        shooterActions.kick(0.3),
+                        autoActionName("Turnoff"),
+                        shooterActions.setShooterPower(0),
+                        autoActionName("Move"),
+                        builder.lineToX(-10).build()
+
                 )
         );
     }

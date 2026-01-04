@@ -7,17 +7,34 @@ import com.acmerobotics.roadrunner.Vector2d;
 
 import org.firstinspires.ftc.teamcode.actions.CollectRowActions;
 import org.firstinspires.ftc.teamcode.actions.ShooterActions;
+import org.firstinspires.ftc.teamcode.vision.AprilTag;
+import org.firstinspires.ftc.teamcode.vision.AprilTagDriver;
+
+import java.util.Optional;
 
 public class AdvancedShootOpMode extends RRAutoOpMode{
-    double shootX = 0;
-    double shootY = 0;
-    double angle = 0;
-    public static SimpleMoveAutoOpMode.Params PARAMS = new SimpleMoveAutoOpMode.Params();
+
+    int row = 0; //change as needed
+
+    AprilTagOpMode april = new AprilTagOpMode();
+    AprilTagDriver aprilDriver = new AprilTagDriver(telemetry, hardwareMap);
 
     @Override
     public Pose2d getInitialPose() {
-        return new Pose2d(PARAMS.positionX, PARAMS.positionY, Math.toRadians(PARAMS.heading));
+        Optional<AprilTag> tags = aprilDriver.detectAprilTags().stream()
+                .filter(aprilTag -> POS_APRIL_TAG_IDS.contains(aprilTag.getId()))
+                .findFirst();
+        Pose2d orientation = new Pose2d(PARAMS.positionX, PARAMS.positionY, Math.toRadians(PARAMS.heading));
+        if(tags.isPresent() && (tags.get().getId() == 20 || tags.get().getId() == 24)){
+            orientation = april.aprilLocate(tags.get());
+        }
+        return orientation;
+
     }
+    double shootX = 0;
+    double shootY = 0;
+    double angle = 0;
+    public static AdvancedShootOpMode.Params PARAMS = new AdvancedShootOpMode.Params();
 
     @Override
     public void start() {
@@ -42,24 +59,27 @@ public class AdvancedShootOpMode extends RRAutoOpMode{
         // Create our sequence of things that we want to do
         runningActions.add(
                 new SequentialAction(
+                        autoActionName("windup"),
+                        shooterActions.setShooterPower(0.8),
+
                         autoActionName("MoveToShoot"),
                         builder.splineTo(new Vector2d(shootX, shootY), angle).build(),
+
                         autoActionName("shoot"),
-                        shooterActions.setShooterPower(0.8),
-                        autoActionName("Kick"),
                         shooterActions.kick(0.3),
-                        autoActionName("Turnoff"),
-                        shooterActions.setShooterPower(0),
+
                         autoActionName("GetMoreBalls"),
-                        collect.toRowAction(0),
+                        collect.toRowAction(row),
+
                         autoActionName("MoveToShoot"),
                         builder.splineTo(new Vector2d(shootX, shootY), angle).build(),
+
                         autoActionName("shoot"),
-                        shooterActions.setShooterPower(0.8),
-                        autoActionName("Kick"),
                         shooterActions.kick(0.3),
+
                         autoActionName("Turnoff"),
                         shooterActions.setShooterPower(0.0),
+
                         autoActionName("ending Auto"),
                         builder.splineTo(new Vector2d(0, -1), 0).build()
                         )

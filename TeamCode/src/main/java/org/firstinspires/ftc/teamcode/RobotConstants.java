@@ -46,9 +46,10 @@ public class RobotConstants {
      */
     public static Boolean CAMERA_ENABLED = true;
     public double firingSpeed = 0.0; //needs to be changed, is the speed the outtake motor needs to spin
-    public double[] AT20_poses = {0.0, 0.0, 0.0};//need to be updated; order: xPose, yPose, heading
+    public double[] AT24_poses = {4.66, 5.0, -127.7};//need to be updated; order: xPose, yPose, heading
+    //red
     //optional change: public Double[] AT20_poses = Double[3];
-    public double[] AT24_poses = {0.0, 0.0, 0.0};//need to be updated; order: xPose, yPose, heading
+    public double[] AT20_poses = {-4.66, 5.0, 127.7};//need to be updated; order: xPose, yPose, heading
     //optional change: public Double[] AT24_poses = Double[3];
     public double[] Blue_ballPlaces = {-4.0, 1.0, -4.0, -1.0, -4.0, -3.0}; //(x3,y3), (x2,y2), (x1,y1)
     //any robot at y >= 0 is closer to place3, robot between y = 0 & y = -2 is closer to place2, robot at y <= -2 is closer to place1
@@ -64,6 +65,6 @@ public class RobotConstants {
     public int distanceLimit = 12;
     public String team = "blue";
     public double rowLength = 6.0;
-    public double[] blueShoot = {3.0, 3.0, 53.0}; //first is x coord, second is y coord, third is angle
-    public double[] redShoot = {-3.0, 3.0, 360.0-53.0}; //only used for AutoOpMode
+    public double[] blueShoot = {-3.0, 3.0, 53.0}; //first is x coord, second is y coord, third is angle
+    public double[] redShoot = {3.0, 3.0, 307.0}; //only used for AutoOpMode
 }

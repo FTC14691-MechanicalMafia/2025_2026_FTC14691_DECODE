@@ -94,9 +94,9 @@ public class AprilTagOpMode extends OpMode {
             y_pose = y_24;
             heading = head_24;
         }
-        double angle = tag.getTargetting().getBearing() + heading;
+        double angle = heading - tag.getTargetting().getBearing();
         double distance =  tag.getTargetting().getRange() * Math.cos(tag.getTargetting().getElevation());
-        return new Pose2d(distance * Math.cos(angle) + x_pose,distance * Math.cos(angle) + y_pose, angle - 180);
+        return new Pose2d(distance * Math.cos(angle) + x_pose, y_pose + (distance * Math.cos(angle)), angle - 180);
     }
 
 

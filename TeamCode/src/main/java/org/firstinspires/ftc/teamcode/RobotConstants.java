@@ -63,4 +63,7 @@ public class RobotConstants {
     public double[] rangeAngles = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
     public int distanceLimit = 12;
     public String team = "blue";
+    public double rowLength = 6.0;
+    public double[] blueShoot = {3.0, 3.0, 53.0}; //first is x coord, second is y coord, third is angle
+    public double[] redShoot = {-3.0, 3.0, 360.0-53.0}; //only used for AutoOpMode
 }

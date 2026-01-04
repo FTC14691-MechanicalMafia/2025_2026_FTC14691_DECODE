@@ -37,38 +37,7 @@ public class StartFromBackAutoOpMode extends RRAutoOpMode {
 
     @Override
     public void start() {
-        Optional<AprilTag> tags = aprilDriver.detectAprilTags().stream()
-                .filter(aprilTag -> POS_APRIL_TAG_IDS.contains(aprilTag.getId()))
-                .findFirst();
         TrajectoryActionBuilder builder = mecanumDrive.actionBuilder(getInitialPose());
-        double[] placesCoords = new double[14];
-        if (constants.team.equalsIgnoreCase("blue")) {
-            placesCoords = constants.Blue_ballPlaces;
-            placesCoords[0] += 1.25;
-            placesCoords[2] += 1.25;
-            placesCoords[4] += 1.25;
-            placesCoords[6] = placesCoords[0] - 2;
-            placesCoords[7] = placesCoords[2] - 2;
-            placesCoords[8] = placesCoords[4] - 2;
-            placesCoords[9] = -1.0;
-            placesCoords[10] = -5.0;
-            placesCoords[11] = 30;
-            placesCoords[12] = -2.75;
-            placesCoords[13] = -3.25;
-        } else if (constants.team.equalsIgnoreCase("red")) {
-            placesCoords = constants.Red_ballPlaces;
-            placesCoords[0] -= 1.25;
-            placesCoords[2] -= 1.25;
-            placesCoords[4] -= 1.25;
-            placesCoords[6] = placesCoords[0] + 2;
-            placesCoords[7] = placesCoords[2] + 2;
-            placesCoords[8] = placesCoords[4] + 2;
-            placesCoords[9] = 1.0;
-            placesCoords[10] = -5.0;
-            placesCoords[11] = -30;
-            placesCoords[12] = 2.75;
-            placesCoords[13] = -3.25;
-        }
         /*int lap = 0;
         while (time <= 20) {
 

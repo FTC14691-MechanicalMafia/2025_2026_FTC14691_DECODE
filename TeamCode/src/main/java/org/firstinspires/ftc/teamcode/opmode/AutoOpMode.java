@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode;
 
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
@@ -8,6 +9,7 @@ import org.firstinspires.ftc.teamcode.vision.AprilTag;
 import org.firstinspires.ftc.teamcode.vision.AprilTagDriver;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import java.util.List;
+import java.util.Optional;
 
 public class AutoOpMode extends MMDriveOpMode {
     double DRIVE_RATE = 1.0/2;

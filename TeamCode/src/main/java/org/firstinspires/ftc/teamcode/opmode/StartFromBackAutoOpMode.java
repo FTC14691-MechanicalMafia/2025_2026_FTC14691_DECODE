@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.vision.AprilTagDriver;
 import java.util.List;
 import java.util.Optional;
 
-@Autonomous(name="StartFromBackAuto")
+@Autonomous(name="Simple Move")
 public class StartFromBackAutoOpMode extends RRAutoOpMode {
 
     // Create an instance of our params class so the FTC dash can manipulate it.

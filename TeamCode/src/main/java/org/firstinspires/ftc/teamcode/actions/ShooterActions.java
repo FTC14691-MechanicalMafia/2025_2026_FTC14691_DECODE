@@ -6,13 +6,14 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class ShooterActions {
-    DcMotor outtakeDrive;
+    DcMotorEx outtakeDrive;
     Servo kicker;
 
-    public ShooterActions(DcMotor outtakeDrive, Servo kicker) {
+    public ShooterActions(DcMotorEx outtakeDrive, Servo kicker) {
         this.outtakeDrive = outtakeDrive;
         this.kicker = kicker;
     }
@@ -22,8 +23,8 @@ public class ShooterActions {
         Action action = new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                outtakeDrive.setPower(power);
-                return true;
+                outtakeDrive.setVelocity(power);
+                return power >= outtakeDrive.getVelocity();
             }
         };
         return action;

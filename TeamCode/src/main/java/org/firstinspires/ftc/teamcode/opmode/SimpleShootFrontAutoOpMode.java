@@ -3,14 +3,12 @@ package org.firstinspires.ftc.teamcode.opmode;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
-import com.acmerobotics.roadrunner.Vector2d;
-import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.actions.ShooterActions;
 
-@Autonomous(name="Simple Move")
-public class SimpleMoveAutoOpMode extends RRAutoOpMode {
+@Autonomous(name="Simple Shoot Front")
+public class SimpleShootFrontAutoOpMode extends RRAutoOpMode {
 
     // Create an instance of our params class so the FTC dash can manipulate it.
     public static Params PARAMS = new Params();

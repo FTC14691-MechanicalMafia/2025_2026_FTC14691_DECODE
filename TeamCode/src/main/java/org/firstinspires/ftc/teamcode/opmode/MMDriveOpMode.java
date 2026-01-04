@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriver;
 import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriverRR;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
@@ -42,7 +43,7 @@ public abstract class MMDriveOpMode extends OpMode {
     protected String intakeStatus = "Offline";
 
     // Outtake System
-    protected DcMotor outtakeDrive = null;
+    protected DcMotorEx outtakeDrive = null;
     protected Servo aimServo = null;
     protected Servo kicker = null;
     protected String outtakeStatus = "Offline";
@@ -135,7 +136,7 @@ public abstract class MMDriveOpMode extends OpMode {
         //  init outtake
         telemetry.addData("Outtake: %s", this::getOuttakeStatus);
         if (RobotConstants.OUTTAKE_ENABLED) {
-            outtakeDrive = hardwareMap.get(DcMotor.class, "outtake_drive");
+            outtakeDrive = hardwareMap.get(DcMotorEx.class, "outtake_drive");
             outtakeDrive.setDirection(DcMotor.Direction.REVERSE);
             outtakeDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 

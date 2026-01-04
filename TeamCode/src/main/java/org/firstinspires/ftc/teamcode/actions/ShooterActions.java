@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.RobotConstants;
+
 public class ShooterActions {
     DcMotorEx outtakeDrive;
     Servo kicker;
@@ -35,7 +37,7 @@ public class ShooterActions {
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 kicker.setPosition(Pos);
                 new SleepAction(1).run(telemetryPacket);
-                kicker.setPosition(0);
+                kicker.setPosition(RobotConstants.OUTTAKE_SHOOT_REST_POS);
                 return true;
             }
         };

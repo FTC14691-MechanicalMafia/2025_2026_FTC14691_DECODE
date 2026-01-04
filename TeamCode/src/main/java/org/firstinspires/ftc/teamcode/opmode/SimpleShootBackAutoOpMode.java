@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.RobotConstants;
 import org.firstinspires.ftc.teamcode.actions.ShooterActions;
 
 @Autonomous(name="Simple Shoot Back")
@@ -33,7 +34,7 @@ public class SimpleShootBackAutoOpMode extends RRAutoOpMode {
                         autoActionName("Turnon"),
                         shooterActions.setShooterPower(1),
                         autoActionName("Kick"),
-                        shooterActions.kick(0.3),
+                        shooterActions.kick(RobotConstants.OUTAKE_SHOOT_LAUNCH_POS),
                         autoActionName("Turnoff"),
                         shooterActions.setShooterPower(0),
                         autoActionName("Move"),

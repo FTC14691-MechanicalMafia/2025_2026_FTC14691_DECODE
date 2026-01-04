@@ -93,7 +93,6 @@ public class TeleOpMode extends MMDriveOpMode {
             this.intakeStatus = "Pow: " + intakePower;
         }
 
-        // right trigger for outtake on/off
         if (RobotConstants.OUTTAKE_ENABLED) {
             // Dpad left (slower) right (faster) outtake motor speed
             if (gamepad2.dpad_up) outtakePower = 0.0;
@@ -116,7 +115,7 @@ public class TeleOpMode extends MMDriveOpMode {
                 aimpos = (aimpos * .2) + .1 ;
                 if (aimpos > .3) aimpos = .3;
                 if (aimpos < .1) aimpos = .1;
-                aimServo.setPosition(aimpos);
+//                aimServo.setPosition(aimpos);
             }
 
             //  RT for shoot ball - servo
@@ -127,7 +126,7 @@ public class TeleOpMode extends MMDriveOpMode {
             }
 
             this.outtakeStatus = String.format("Pow: %.3f, Aim: %.3f, Shoot: %.3f",
-                    outtakeDrive.getPower(), aimServo.getPosition(), kicker.getPosition());
+                    outtakeDrive.getPower(), kicker.getPosition());
         }
 
         // update telemetry

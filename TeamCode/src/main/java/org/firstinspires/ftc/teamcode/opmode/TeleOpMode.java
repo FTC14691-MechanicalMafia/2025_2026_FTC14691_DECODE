@@ -103,10 +103,13 @@ public class TeleOpMode extends MMDriveOpMode {
         if (RobotConstants.OUTTAKE_ENABLED) {
             // Dpad left (slower) right (faster) outtake motor speed
             if (gamepad2.dpad_up) outtakePower = 0.0;
-            if (gamepad2.dpad_down) outtakePower = 0.0;
+//            if (gamepad2.dpad_down) outtakePower = 0.0;
 //            if (gamepad2.dpad_left && outtakePower > 0) outtakePower -= 0.1;
-            if (gamepad2.dpad_right && outtakePower < RobotConstants.MAX_OUTTAKE_POWER) outtakePower += 0.2;
-            outtakeDrive.setVelocity(outtakePower);
+            if (gamepad2.dpad_right && outtakePower < RobotConstants.MAX_OUTTAKE_POWER) {
+                outtakePower += 0.2;
+            }
+
+            outtakeDrive.setPower(outtakePower);
 
             //TODO - remove this, commenting out hood code for now
             //  right stick up/down aiming for distance angle (hood angle) - servo

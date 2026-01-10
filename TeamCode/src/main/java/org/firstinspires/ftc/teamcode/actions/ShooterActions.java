@@ -25,7 +25,7 @@ public class ShooterActions {
         Action action = new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                outtakeDrive.setVelocity(power);
+                outtakeDrive.setPower(power);
                 return power >= outtakeDrive.getVelocity();
             }
         };

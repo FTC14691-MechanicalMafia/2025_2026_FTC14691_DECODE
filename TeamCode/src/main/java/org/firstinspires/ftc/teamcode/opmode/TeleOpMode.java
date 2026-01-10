@@ -51,7 +51,7 @@ public class TeleOpMode extends MMDriveOpMode {
             if (yaw != 0) {
                 yaw = (yaw / Math.abs(yaw)) * Math.pow(Math.abs(yaw), 2);
             }
-            if (gamepad2.x && Math.abs(autoAimPower) > 0) { // check if autoaim is pushed and we have something to aim at
+            if (gamepad1.x && Math.abs(autoAimPower) > 0) { // check if autoaim is pushed and we have something to aim at
                 yaw = autoAimPower;
             }
 
@@ -62,12 +62,12 @@ public class TeleOpMode extends MMDriveOpMode {
         //if yaw = 0, give the all clear to shoot
         double driverMultiplier = 0.75;
         String speed = "norm";
-        if (gamepad1.left_trigger > 0) {
+        if (gamepad1.right_bumper) {
             //  LT for slow
             driverMultiplier = 0.5;
             speed = "slow";
         }
-        if (gamepad1.right_trigger > 0) {
+        if (gamepad1.left_bumper) {
             //  RT for boost
             driverMultiplier = 1;
             speed = "boost";
@@ -88,7 +88,7 @@ public class TeleOpMode extends MMDriveOpMode {
 
         // left trigger for intake on/off
         if (RobotConstants.INTAKE_ENABLED) {
-            double intakePower = gamepad2.left_trigger > 0.5 ? 1.0 : 0.0;
+            double intakePower = gamepad2.left_trigger > 0.5 ? 1.0 : gamepad2.left_bumper ? -1.0 : 0.0;
             intakeDrive.setPower(intakePower);
             this.intakeStatus = "Pow: " + intakePower;
         }

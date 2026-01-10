@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 @TeleOp(name = "TeleOp Mode", group = "Competition")
 public class TeleOpMode extends MMDriveOpMode {
-    double outtakePower = 0.0;
     @Override
     public Pose2d getInitialPose() {
         // Return 0s since we don't care about our position in TeleOp.
@@ -101,6 +100,7 @@ public class TeleOpMode extends MMDriveOpMode {
         }
 
         if (RobotConstants.OUTTAKE_ENABLED) {
+            double outtakePower = outtakeDrive.getPower();
             // Dpad left (slower) right (faster) outtake motor speed
             if (gamepad2.dpad_up) outtakePower = 0.0;
 //            if (gamepad2.dpad_down) outtakePower = 0.0;

@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriver;
 import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriverRR;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -39,12 +40,13 @@ public abstract class MMDriveOpMode extends OpMode {
     protected String odoVel = "None";
 
     // Intake System
-    protected DcMotor intakeDrive = null;
+    protected CRServo intakeDrive = null;
     protected String intakeStatus = "Offline";
 
     // Outtake System
     protected DcMotorEx outtakeDrive = null;
     protected Servo aimServo = null;
+    protected Servo aimIndicator = null;
     protected Servo kicker = null;
     protected String outtakeStatus = "Offline";
     protected AprilTagDriver aprilTagDrive = null;
@@ -110,6 +112,9 @@ public abstract class MMDriveOpMode extends OpMode {
             aprilTagDrive = new AprilTagDriver(telemetry, hardwareMap);
             aprilTagDrive.initAprilTag();
 
+            aimIndicator = hardwareMap.get(Servo.class, "indicator");
+            aimIndicator.setPosition(0.277); //red
+
             this.aprilTagStatus = "Initialized";
         }
 
@@ -127,9 +132,8 @@ public abstract class MMDriveOpMode extends OpMode {
         // Init intake
         telemetry.addData("Intake: %s", this::getIntakeStatus);
         if (RobotConstants.INTAKE_ENABLED) {
-            intakeDrive = hardwareMap.get(DcMotor.class, "intake_drive");
-            intakeDrive.setDirection(DcMotor.Direction.FORWARD);
-            intakeDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            intakeDrive = hardwareMap.get(CRServo.class, "intake_drive");
+            intakeDrive.setDirection(CRServo.Direction.FORWARD);
             this.intakeStatus = "Initialized";
         }
 
@@ -140,8 +144,8 @@ public abstract class MMDriveOpMode extends OpMode {
             outtakeDrive.setDirection(DcMotor.Direction.REVERSE);
             outtakeDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-            aimServo = hardwareMap.get(Servo.class, "outtake_aim");
-            aimServo.setPosition(RobotConstants.OUTTAKE_AIM_INIT_POS);
+//            aimServo = hardwareMap.get(Servo.class, "outtake_aim");
+//            aimServo.setPosition(RobotConstants.OUTTAKE_AIM_INIT_POS);
 
             kicker = hardwareMap.get(Servo.class, "shoot_servo");
             kicker.setPosition(RobotConstants.OUTTAKE_SHOOT_REST_POS);
@@ -179,6 +183,10 @@ public abstract class MMDriveOpMode extends OpMode {
         if (RobotConstants.DRIVE_ENABLED) {
             mecanumDrive.updatePoseEstimate();
         }
+
+        if (RobotConstants.CAMERA_ENABLED) {
+            aimIndicator.setPosition(0); //off
+        }
     }
 
     @Override
@@ -198,6 +206,9 @@ public abstract class MMDriveOpMode extends OpMode {
         if (RobotConstants.OUTTAKE_ENABLED) {
             outtakeDrive.setPower(0);
             this.outtakeStatus = "Stopped";
+        }
+        if (RobotConstants.CAMERA_ENABLED) {
+            aimIndicator.setPosition(0.277); //red
         }
     }
 
@@ -240,7 +251,7 @@ public abstract class MMDriveOpMode extends OpMode {
                 ballsLeft -= 1;
             }
         }
-        aimServo.setPosition(constants.rangeAngles[range * 2]);
+//        aimServo.setPosition(constants.rangeAngles[range * 2]);
     }
     public void intake(int power){
         intakeDrive.setPower(power);

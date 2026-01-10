@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -30,9 +31,8 @@ public class CollectRowActions{
     }
     private TrajectoryActionBuilder builder;
     double[] placesCoords = new double[9];
-    //Servo intakeDrive;
-    DcMotor intakeDrive;
-    public CollectRowActions(TrajectoryActionBuilder builder, /*Servo*/ DcMotor intakeDrive){
+    CRServo intakeDrive;
+    public CollectRowActions(TrajectoryActionBuilder builder, CRServo intakeDrive){
         this.builder = builder;
         this.intakeDrive = intakeDrive;
     }
@@ -42,7 +42,7 @@ public class CollectRowActions{
         public ToRowAction(int row) {
             this.row = row;
         }
-        public Action setIntakePower/*Position*/(double power) {
+        public Action setIntakePower(double power) {
             Action action = new Action() {
                 @Override
                 public boolean run(@NonNull TelemetryPacket telemetryPacket) {

@@ -66,6 +66,7 @@ public class AprilTagDriver {
         double trunNum = 0.01;
         final List<AprilTag> aprilTags = currentDetections.stream()
                 .filter(Objects::nonNull)
+                .filter(detection -> detection.ftcPose != null)
                 .map(detection -> {
                     final Pose pose = new Pose(detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z);
                     final Rotation rotation = new Rotation(detection.ftcPose.roll, detection.ftcPose.pitch, detection.ftcPose.yaw);

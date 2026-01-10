@@ -47,6 +47,13 @@ public class TeleOpMode extends MMDriveOpMode {
                     .collect(Collectors.joining(","));
             double autoAimPower = autoAim(tags);
 
+            //if the autoaim power is set then we have a detection
+            if (Math.abs(autoAimPower) > 0) {
+                aimIndicator.setPosition(0.5);
+            } else {
+                aimIndicator.setPosition(0);
+            }
+
             // this is to prevent oscillating back and forth due to overshoot (I think?)
             if (yaw != 0) {
                 yaw = (yaw / Math.abs(yaw)) * Math.pow(Math.abs(yaw), 2);
@@ -97,26 +104,27 @@ public class TeleOpMode extends MMDriveOpMode {
             // Dpad left (slower) right (faster) outtake motor speed
             if (gamepad2.dpad_up) outtakePower = 0.0;
             if (gamepad2.dpad_down) outtakePower = 0.0;
-            if (gamepad2.dpad_left && outtakePower > 0) outtakePower -= 0.1;
+//            if (gamepad2.dpad_left && outtakePower > 0) outtakePower -= 0.1;
             if (gamepad2.dpad_right && outtakePower < RobotConstants.MAX_OUTTAKE_POWER) outtakePower += 0.2;
             outtakeDrive.setVelocity(outtakePower);
 
+            //TODO - remove this, commenting out hood code for now
             //  right stick up/down aiming for distance angle (hood angle) - servo
-            if (gamepad2.right_stick_y != 0) {
-                // if the stick is at -1 (bottom) assume that is the start position
-                // if the stick is at 1 (top) assume that it should be at the max position
-                // using exponential regression
-                // TODO - calculate the exponential regression on init based on the configured variables
-                //aimServo.setPosition(0.1869 * Math.pow(5.35521, gamepad2.right_stick_y));
-
-                double aimpos = gamepad2.right_stick_y;
-                aimpos = aimpos + 1;
-                aimpos = aimpos / 2;
-                aimpos = (aimpos * .2) + .1 ;
-                if (aimpos > .3) aimpos = .3;
-                if (aimpos < .1) aimpos = .1;
-//                aimServo.setPosition(aimpos);
-            }
+//            if (gamepad2.right_stick_y != 0) {
+//                // if the stick is at -1 (bottom) assume that is the start position
+//                // if the stick is at 1 (top) assume that it should be at the max position
+//                // using exponential regression
+//                // TODO - calculate the exponential regression on init based on the configured variables
+//                //aimServo.setPosition(0.1869 * Math.pow(5.35521, gamepad2.right_stick_y));
+//
+//                double aimpos = gamepad2.right_stick_y;
+//                aimpos = aimpos + 1;
+//                aimpos = aimpos / 2;
+//                aimpos = (aimpos * .2) + .1 ;
+//                if (aimpos > .3) aimpos = .3;
+//                if (aimpos < .1) aimpos = .1;
+////                aimServo.setPosition(aimpos);
+//            }
 
             //  RT for shoot ball - servo
             if (gamepad2.right_trigger > 0) {
@@ -125,7 +133,7 @@ public class TeleOpMode extends MMDriveOpMode {
                 kicker.setPosition(RobotConstants.OUTTAKE_SHOOT_REST_POS);
             }
 
-            this.outtakeStatus = String.format("Pow: %.3f, Aim: %.3f, Shoot: %.3f",
+            this.outtakeStatus = String.format("Pow: %.3f, Shoot: %.3f",
                     outtakeDrive.getPower(), kicker.getPosition());
         }
 

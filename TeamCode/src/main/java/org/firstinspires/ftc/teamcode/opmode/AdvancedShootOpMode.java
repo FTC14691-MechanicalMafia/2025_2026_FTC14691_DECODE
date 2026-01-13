@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode.opmode;
 
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 
+import org.firstinspires.ftc.teamcode.RobotConstants;
 import org.firstinspires.ftc.teamcode.actions.CollectRowActions;
 import org.firstinspires.ftc.teamcode.actions.ShooterActions;
 import org.firstinspires.ftc.teamcode.vision.AprilTag;
@@ -56,6 +59,8 @@ public class AdvancedShootOpMode extends RRAutoOpMode{
 
         CollectRowActions collect = new CollectRowActions(builder, intakeDrive);
 
+        SleepAction sleepAction = new SleepAction(0.75);
+
         // Create our sequence of things that we want to do
         runningActions.add(
                 new SequentialAction(
@@ -65,8 +70,20 @@ public class AdvancedShootOpMode extends RRAutoOpMode{
                         autoActionName("MoveToShoot"),
                         builder.splineTo(new Vector2d(shootX, shootY), angle).build(),
 
-                        autoActionName("shoot"),
-                        shooterActions.kick(0.3),
+                        autoActionName("Kick"),
+                        shooterActions.kick(RobotConstants.OUTAKE_SHOOT_LAUNCH_POS),
+
+                        autoActionName("Wait"),
+                        sleepAction,
+
+                        autoActionName("Kick"),
+                        shooterActions.kick(RobotConstants.OUTAKE_SHOOT_LAUNCH_POS),
+
+                        autoActionName("Wait"),
+                        sleepAction,
+
+                        autoActionName("Kick"),
+                        shooterActions.kick(RobotConstants.OUTAKE_SHOOT_LAUNCH_POS),
 
                         autoActionName("GetMoreBalls"),
                         collect.toRowAction(row),
@@ -74,14 +91,28 @@ public class AdvancedShootOpMode extends RRAutoOpMode{
                         autoActionName("MoveToShoot"),
                         builder.splineTo(new Vector2d(shootX, shootY), angle).build(),
 
-                        autoActionName("shoot"),
-                        shooterActions.kick(0.3),
+                        autoActionName("Kick"),
+                        shooterActions.kick(RobotConstants.OUTAKE_SHOOT_LAUNCH_POS),
 
-                        autoActionName("Turnoff"),
-                        shooterActions.setShooterPower(0.0),
+                        autoActionName("Wait"),
+                        sleepAction,
 
-                        autoActionName("ending Auto"),
-                        builder.splineTo(new Vector2d(0, -1), 0).build()
+                        autoActionName("Kick"),
+                        shooterActions.kick(RobotConstants.OUTAKE_SHOOT_LAUNCH_POS),
+
+                        autoActionName("Wait"),
+                        sleepAction,
+
+                        autoActionName("Kick"),
+                        shooterActions.kick(RobotConstants.OUTAKE_SHOOT_LAUNCH_POS),
+
+                        new ParallelAction(
+                            autoActionName("Turnoff"),
+                            shooterActions.setShooterPower(0.0),
+
+                            autoActionName("ending Auto"),
+                            builder.splineTo(new Vector2d(0, -1), 0).build()
+                            )
                         )
         );
     }

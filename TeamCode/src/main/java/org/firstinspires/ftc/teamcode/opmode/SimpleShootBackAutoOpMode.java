@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.opmode;
 
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
@@ -27,18 +29,36 @@ public class SimpleShootBackAutoOpMode extends RRAutoOpMode {
         TrajectoryActionBuilder builder = mecanumDrive.actionBuilder(getInitialPose());
 
         ShooterActions shooterActions = new ShooterActions(outtakeDrive, kicker);
+        SleepAction sleepAction = new SleepAction(0.75);
 
         // Create our sequence of things that we want to do
         runningActions.add(
                 new SequentialAction(
                         autoActionName("Turnon"),
                         shooterActions.setShooterPower(1),
+
                         autoActionName("Kick"),
                         shooterActions.kick(RobotConstants.OUTAKE_SHOOT_LAUNCH_POS),
-                        autoActionName("Turnoff"),
-                        shooterActions.setShooterPower(0),
-                        autoActionName("Move"),
-                        builder.lineToX(10).build()
+
+                        autoActionName("Wait"),
+                        sleepAction,
+
+                        autoActionName("Kick"),
+                        shooterActions.kick(RobotConstants.OUTAKE_SHOOT_LAUNCH_POS),
+
+                        autoActionName("Wait"),
+                        sleepAction,
+
+                        autoActionName("Kick"),
+                        shooterActions.kick(RobotConstants.OUTAKE_SHOOT_LAUNCH_POS),
+
+                        new ParallelAction(
+                            autoActionName("Turnoff"),
+                            shooterActions.setShooterPower(0),
+
+                            autoActionName("Move"),
+                            builder.lineToX(10).build()
+                            )
 
                 )
         );

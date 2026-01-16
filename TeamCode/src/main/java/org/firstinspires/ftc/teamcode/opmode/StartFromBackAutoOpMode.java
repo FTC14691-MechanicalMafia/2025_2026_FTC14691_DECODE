@@ -89,7 +89,7 @@ public class StartFromBackAutoOpMode extends RRAutoOpMode {
         runningActions.add(
                 new SequentialAction(
                         autoActionName("Move off start"),
-                        builder.lineToX(-10).build()
+                        builder.lineToX(10).build()
                 )
         );
     }

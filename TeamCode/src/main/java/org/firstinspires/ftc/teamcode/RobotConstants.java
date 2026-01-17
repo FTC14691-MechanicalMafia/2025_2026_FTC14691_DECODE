@@ -6,6 +6,8 @@ import com.acmerobotics.dashboard.config.Config;
 public class RobotConstants {
 
     public static double MAX_OUTTAKE_POWER = 1;
+
+    public static double REG_OUTTAKE_POWER = 0.55;
     /**
      * When true, the intake motor is expected to be present on the robot.  If false, the motor will not be
      * initialized and intake is unavailable.
@@ -25,7 +27,8 @@ public class RobotConstants {
     public static double OUTTAKE_AIM_INIT_POS = 0;
 //    public static double OUTTAKE_AIM_MIN_POS = 0;
 //    public static double OUTTAKE_AIM_MAX_POS = 0.1;
-    public static double OUTAKE_SHOOT_LAUNCH_POS = 0.75;
+    public static double OUTAKE_SHOOT_LAUNCH_POS = 0.63;
+
     public static double OUTTAKE_SHOOT_REST_POS = 0.44;
 
 

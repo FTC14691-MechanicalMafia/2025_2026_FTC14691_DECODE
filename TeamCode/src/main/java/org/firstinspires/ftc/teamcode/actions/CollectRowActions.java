@@ -37,16 +37,15 @@ public class CollectRowActions{
         this.intakeDrive = intakeDrive;
     }
     public Action setIntakePower(double power) {
-        Action action = new Action() {
+        return new Action() {
             @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            public boolean run(TelemetryPacket telemetryPacket) {
                 intakeDrive.setPower(power);
                 //setVelocity();
 
-                return true;
+                return false;
             }
         };
-        return action;
     }
     public class ToRowAction implements Action {
         private int row;//later figure out how to use Rows option bc Rows was causing issue with location call

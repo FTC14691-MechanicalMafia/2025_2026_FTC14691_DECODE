@@ -22,26 +22,24 @@ public class ShooterActions {
 
 
     public Action setShooterPower(double power) {
-        Action action = new Action() {
+        return new Action() {
             @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            public boolean run(TelemetryPacket telemetryPacket) {
                 outtakeDrive.setPower(power);
-                return power >= outtakeDrive.getVelocity();
+                return false;
             }
         };
-        return action;
     }
     public Action kick(double Pos) {
-        Action action = new Action() {
+        return new Action() {
             @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            public boolean run(TelemetryPacket telemetryPacket) {
                 kicker.setPosition(Pos);
                 new SleepAction(1).run(telemetryPacket);
                 kicker.setPosition(RobotConstants.OUTTAKE_SHOOT_REST_POS);
                 return true;
             }
         };
-        return action;
     }
 
 }

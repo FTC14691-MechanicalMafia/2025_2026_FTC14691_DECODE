@@ -28,6 +28,27 @@ public class NewSimpleShootFrontAutoOpMode extends RRAutoOpMode {
         return new Pose2d(PARAMS.positionX, PARAMS.positionY, Math.toRadians(PARAMS.heading));
     }
 
+    public Action kickUpAction() {
+        return new Action() {
+            @Override
+            public boolean run(TelemetryPacket telemetryPacket) {
+                kicker.setPosition(RobotConstants.OUTAKE_SHOOT_LAUNCH_POS);
+                return false; // finishes immediately
+            }
+        };
+    }
+
+    public Action kickDownAction() {
+        return new Action() {
+            @Override
+            public boolean run(TelemetryPacket telemetryPacket) {
+                kicker.setPosition(RobotConstants.OUTTAKE_SHOOT_REST_POS);
+                return false;
+            }
+        };
+    }
+
+
     @Override
     public void start() {
         super.start();
@@ -37,44 +58,48 @@ public class NewSimpleShootFrontAutoOpMode extends RRAutoOpMode {
 
         ShooterActions shooterActions = new ShooterActions(outtakeDrive, kicker);
         CollectRowActions collectRowActions = new CollectRowActions(builder, intakeDrive);
-        SleepAction sleepAction = new SleepAction(0.75);
 
-        Action kickAction = new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                kicker.setPosition(RobotConstants.OUTAKE_SHOOT_LAUNCH_POS);
-                new SleepAction(10).run(telemetryPacket);
-                //kicker.setPosition(RobotConstants.OUTTAKE_SHOOT_REST_POS),
-                return true;
-            }
-        };
 
         // Create our sequence of things that we want to do
         runningActions.add(
                 new SequentialAction(
                         //move back 4 ft, spin up motor
-//                        new ParallelAction(
-//                                builder.lineToX(10).build(),
-//                                shooterActions.setShooterPower(0.8)
-//                        ),
+                        new ParallelAction(
+                                builder.lineToX(10).build(),
+                                shooterActions.setShooterPower(RobotConstants.REG_OUTTAKE_POWER)
+                        ),
 
                         //intake on
                         collectRowActions.setIntakePower(1),
 
+                        //wait
+                        new SleepAction(5),
+
                         //kick
-                        sleepAction,
+                        autoActionName("shoot #1"),
+                        kickUpAction(),
+                        new SleepAction(0.75),
+                        kickDownAction(),
 
                         //wait
-                        sleepAction,
+                        autoActionName("wait #1"),
+                        new SleepAction(3),
 
                         //kick
-                        sleepAction,
+                        autoActionName("shoot #2"),
+                        kickUpAction(),
+                        new SleepAction(0.75),
+                        kickDownAction(),
 
                         //wait
-                        sleepAction,
+                        autoActionName("wait #2"),
+                        new SleepAction(3),
 
                         //kick
-                        sleepAction,
+                        autoActionName("shoot #3"),
+                        kickUpAction(),
+                        new SleepAction(0.75),
+                        kickDownAction(),
 
                         //stop motor, intake off
                         new ParallelAction(

@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmode;
 
-import androidx.annotation.NonNull;
-
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
@@ -65,40 +63,47 @@ public class NewSimpleShootFrontAutoOpMode extends RRAutoOpMode {
                 new SequentialAction(
                         //move back 4 ft, spin up motor
                         new ParallelAction(
-                                builder.lineToX(10).build(),
-                                shooterActions.setShooterPower(RobotConstants.REG_OUTTAKE_POWER)
+                                builder.lineToX(RobotConstants.AUTO_GOBACK_DIST).build(),
+                                shooterActions.setShooterPower(RobotConstants.AUTO_OUTTAKE_POWER_1)
                         ),
 
                         //intake on
-                        collectRowActions.setIntakePower(1),
+                        collectRowActions.setIntakePower(RobotConstants.AUTO_INTAKE_POWER),
 
                         //wait
-                        new SleepAction(5),
+                        new SleepAction(RobotConstants.AUTO_INITIAL_KICK_DELAY),
 
                         //kick
                         autoActionName("shoot #1"),
                         kickUpAction(),
-                        new SleepAction(0.75),
+                        new SleepAction(RobotConstants.AUTO_KICK_UPDOWN_DELAY),
                         kickDownAction(),
 
                         //wait
                         autoActionName("wait #1"),
-                        new SleepAction(3),
+                        new ParallelAction(
+                            new SleepAction(RobotConstants.AUTO_KICK_WAIT_DELAY),
+                            shooterActions.setShooterPower(RobotConstants.AUTO_OUTTAKE_POWER_2)
+                        ),
+                        
 
                         //kick
                         autoActionName("shoot #2"),
                         kickUpAction(),
-                        new SleepAction(0.75),
+                        new SleepAction(RobotConstants.AUTO_KICK_UPDOWN_DELAY),
                         kickDownAction(),
 
                         //wait
                         autoActionName("wait #2"),
-                        new SleepAction(3),
+                        new ParallelAction(
+                                new SleepAction(RobotConstants.AUTO_KICK_WAIT_DELAY),
+                                shooterActions.setShooterPower(RobotConstants.AUTO_OUTTAKE_POWER_3)
+                        ),
 
                         //kick
                         autoActionName("shoot #3"),
                         kickUpAction(),
-                        new SleepAction(0.75),
+                        new SleepAction(RobotConstants.AUTO_KICK_UPDOWN_DELAY),
                         kickDownAction(),
 
                         //stop motor, intake off

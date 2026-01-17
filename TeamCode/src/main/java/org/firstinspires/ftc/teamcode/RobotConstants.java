@@ -7,7 +7,18 @@ public class RobotConstants {
 
     public static double MAX_OUTTAKE_POWER = 1;
 
-    public static double REG_OUTTAKE_POWER = 0.55;
+    public static double AUTO_OUTTAKE_POWER_1 = 0.65;
+    public static double AUTO_OUTTAKE_POWER_2 = 0.5;
+    public static double AUTO_OUTTAKE_POWER_3 = 0.65;
+    public static double AUTO_INTAKE_POWER = 1;
+
+    public static double AUTO_INITIAL_KICK_DELAY = 5;
+
+    public static double AUTO_KICK_UPDOWN_DELAY = 1;
+
+    public static double AUTO_KICK_WAIT_DELAY = 4;
+
+    public static double AUTO_GOBACK_DIST = 2;
     /**
      * When true, the intake motor is expected to be present on the robot.  If false, the motor will not be
      * initialized and intake is unavailable.

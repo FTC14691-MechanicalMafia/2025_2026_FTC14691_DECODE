@@ -2,16 +2,22 @@ package org.firstinspires.ftc.teamcode.opmode;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.AngularVelConstraint;
+import com.acmerobotics.roadrunner.MinVelConstraint;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
+import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.RobotConstants;
 import org.firstinspires.ftc.teamcode.actions.CollectRowActions;
 import org.firstinspires.ftc.teamcode.actions.ShooterActions;
+
+import java.util.Arrays;
 
 @Autonomous(name="New Simple Shoot Front")
 public class NewSimpleShootFrontAutoOpMode extends RRAutoOpMode {
@@ -64,8 +70,17 @@ public class NewSimpleShootFrontAutoOpMode extends RRAutoOpMode {
                         //move back 4 ft, spin up motor
                         new ParallelAction(
                                 builder.lineToX(RobotConstants.AUTO_GOBACK_DIST).build(),
+//                                builder.lineToX(
+//                                        RobotConstants.AUTO_GOBACK_DIST,
+//                                        new MinVelConstraint(Arrays.asList(
+//                                                new TranslationalVelConstraint(RobotConstants.AUTO_ACCEL_CONSTRAINT), // Max Speed in inches/sec
+//                                                new AngularVelConstraint(Math.PI / 2) // Max Angular Speed
+//                                        )),
+//                                        new ProfileAccelConstraint(-20.0, 25.0) // Min and Max Acceleration
+//                                ).build(),
                                 shooterActions.setShooterPower(RobotConstants.AUTO_OUTTAKE_POWER_1)
                         ),
+
 
                         //intake on
                         collectRowActions.setIntakePower(RobotConstants.AUTO_INTAKE_POWER),

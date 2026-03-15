@@ -15,6 +15,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -59,6 +60,10 @@ public class AprilTagDriver {
         visionPortal = builder.build();
     }
     public List<AprilTag> detectAprilTags() {
+        if (processor == null) {
+            return Collections.EMPTY_LIST;
+        }
+
         List<AprilTagDetection> currentDetections = processor.getDetections();
         telemetry.addData("Number AprilTags Detected", currentDetections.size());
 

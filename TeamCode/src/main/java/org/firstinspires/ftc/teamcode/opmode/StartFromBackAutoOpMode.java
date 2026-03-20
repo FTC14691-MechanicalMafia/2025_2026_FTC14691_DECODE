@@ -99,9 +99,9 @@ public class StartFromBackAutoOpMode extends RRAutoOpMode {
      */
     public static class Params {
 
-        public int positionX = -33;
-        public int positionY = -62;
-        public int heading = 90;
+        public int positionX = 0;
+        public int positionY = 0;
+        public int heading = 0;
     }
 
 }

@@ -141,6 +141,8 @@ public abstract class MMDriveOpMode extends OpMode {
         telemetry.addData("Outtake: %s", this::getOuttakeStatus);
         if (RobotConstants.OUTTAKE_ENABLED) {
             outtakeDrive = hardwareMap.get(DcMotorEx.class, "outtake_drive");
+            outtakeDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            outtakeDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             outtakeDrive.setDirection(DcMotor.Direction.REVERSE);
             outtakeDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 

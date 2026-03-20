@@ -100,7 +100,7 @@ public class TeleOpMode extends MMDriveOpMode {
         }
 
         if (RobotConstants.OUTTAKE_ENABLED) {
-            double outtakePower = outtakeDrive.getPower();
+            double outtakePower = outtakeDrive.getVelocity();
             // Dpad left (slower) right (faster) outtake motor speed
             if (gamepad2.dpad_up) outtakePower = 0.0;
 //            if (gamepad2.dpad_down) outtakePower = 0.0;
@@ -109,7 +109,7 @@ public class TeleOpMode extends MMDriveOpMode {
                 outtakePower += 0.2;
             }
 
-            outtakeDrive.setPower(outtakePower);
+            outtakeDrive.setVelocity(outtakePower);
 
             //TODO - remove this, commenting out hood code for now
             //  right stick up/down aiming for distance angle (hood angle) - servo
@@ -136,8 +136,8 @@ public class TeleOpMode extends MMDriveOpMode {
                 kicker.setPosition(RobotConstants.OUTTAKE_SHOOT_REST_POS);
             }
 
-            this.outtakeStatus = String.format("Pow: %.3f, Shoot: %.3f",
-                    outtakeDrive.getPower(), kicker.getPosition());
+            this.outtakeStatus = String.format("Vel: %.3f, Shoot: %.3f",
+                    outtakeDrive.getVelocity(), kicker.getPosition());
         }
 
         // update telemetry

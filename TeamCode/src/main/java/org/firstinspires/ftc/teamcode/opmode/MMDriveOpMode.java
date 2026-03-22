@@ -84,7 +84,7 @@ public abstract class MMDriveOpMode extends OpMode {
     public abstract Pose2d getInitialPose();
 
     @Override
-    public void init() {
+    public void init(){
         // Init our pinpoint driver / dead wheels
         telemetry.addData("Pinpoint: %s", this::getOdoStatus);
         telemetry.addData("Position: %s", this::getOdoPos);

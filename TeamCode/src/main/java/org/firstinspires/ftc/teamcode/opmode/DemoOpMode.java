@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.teamcode.RobotConstants;
 
 import java.util.Locale;
 
+@TeleOp(name = "Demo Mode", group = "Competition")
 public class DemoOpMode extends OpMode {
     boolean shooting = false;
     double velocity = 100; // should be modified through testing
@@ -35,27 +37,28 @@ public class DemoOpMode extends OpMode {
 
     @Override
     public void init() {
-        FLDrive = hardwareMap.get(DcMotor.class, "Front_Left");
-        FRDrive = hardwareMap.get(DcMotor.class, "Front_Right");
-        BLDrive = hardwareMap.get(DcMotor.class, "Back_Left");
-        BRDrive = hardwareMap.get(DcMotor.class, "Back_Right");
+        FLDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
+        FRDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
+        BLDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
+        BRDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
         outtakeDrive1 = hardwareMap.get(DcMotorEx.class, "outtake1");
         outtakeDrive2 = hardwareMap.get(DcMotorEx.class, "outtake2");
-        intakeDrive = hardwareMap.get(DcMotor.class, "intake");
-        kickDrive = hardwareMap.get(DcMotor.class, "kicker");
+        //intakeDrive = hardwareMap.get(DcMotor.class, "intake");
+        //kickDrive = hardwareMap.get(DcMotor.class, "kicker");
         aimServ = hardwareMap.get(Servo.class, "aimer");
         turnServ = hardwareMap.get(Servo.class, "turner");
         telemetry.addLine("shoot velocity: ");
         telemetry.addLine("speedRate: ");
+        telemetry.addLine("turret angle: ");
     }
 
     @Override
     public void loop(){
 
-        FLDrive.setDirection(DcMotor.Direction.FORWARD);
-        FRDrive.setDirection(DcMotor.Direction.REVERSE);
-        BLDrive.setDirection(DcMotor.Direction.FORWARD);
-        BRDrive.setDirection(DcMotor.Direction.REVERSE);
+        FLDrive.setDirection(DcMotor.Direction.REVERSE);
+        FRDrive.setDirection(DcMotor.Direction.FORWARD);
+        BLDrive.setDirection(DcMotor.Direction.REVERSE);
+        BRDrive.setDirection(DcMotor.Direction.FORWARD);
         outtakeDrive1.setDirection(DcMotorEx.Direction.REVERSE);
         outtakeDrive2.setDirection(DcMotorEx.Direction.FORWARD);
 
@@ -137,18 +140,24 @@ public class DemoOpMode extends OpMode {
         }
 
         for(int i = 0; i < gamepad2.left_stick_x; i++){
-            turnServ.setPosition(turnServ.getPosition() + 1);
+            turnServ.setPosition(turnServ.getPosition() + 0.01);
         }
         for(int i = 0; i > gamepad2.left_stick_x; i--){
-            turnServ.setPosition(turnServ.getPosition() - 1);
+            turnServ.setPosition(turnServ.getPosition() - 0.01);
         }
-
+        if(turnServ.getPosition() < 0){
+            turnServ.setPosition(0);
+        }
+        else if(turnServ.getPosition() > 1){
+            turnServ.setPosition(1);
+        }
         outtakeDrive1.setVelocity(outVel1, AngleUnit.RADIANS);
         outtakeDrive2.setVelocity(outVel2, AngleUnit.RADIANS);
         telemetry.addData("velocity: ", outVel1);
+        telemetry.addData("turret angle: ", turnServ.getPosition());
 
         //intake & kick code
-        double inPow = gamepad1.left_trigger;
+        /*double inPow = gamepad1.left_trigger;
         inPow = Math.min(inPow, 1);
         intakeDrive.setPower(inPow);
 
@@ -161,6 +170,6 @@ public class DemoOpMode extends OpMode {
         }
         if(inPow > 0){
             telemetry.addLine("intake on");
-        }
+        }*/
     }
 }

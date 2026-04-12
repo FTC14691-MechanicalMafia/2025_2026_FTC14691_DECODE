@@ -99,7 +99,7 @@ public class DemoOpMode extends OpMode {
         BLDrive.setPower(BLPow);
         BRDrive.setPower(BRPow);
 
-
+        // turret code
         if(gamepad2.dpad_up){
             aimServ.setPosition(aimServ.getPosition() + 0.005);
         } else if (gamepad2.dpad_down){
@@ -146,5 +146,21 @@ public class DemoOpMode extends OpMode {
         outtakeDrive1.setVelocity(outVel1, AngleUnit.RADIANS);
         outtakeDrive2.setVelocity(outVel2, AngleUnit.RADIANS);
         telemetry.addData("velocity: ", outVel1);
+
+        //intake & kick code
+        double inPow = gamepad1.left_trigger;
+        inPow = Math.min(inPow, 1);
+        intakeDrive.setPower(inPow);
+
+        double kickPow = gamepad1.right_trigger;
+        kickPow = Math.min(kickPow, 1);
+        kickDrive.setPower(kickPow);
+
+        if(kickPow > 0){
+            telemetry.addLine("kicker on");
+        }
+        if(inPow > 0){
+            telemetry.addLine("intake on");
+        }
     }
 }
